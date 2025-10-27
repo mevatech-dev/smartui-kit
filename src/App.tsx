@@ -8,10 +8,6 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     'NunitoSans-Regular': require('../assets/fonts/NunitoSans-Regular.ttf'),
     'NunitoSans-Italic': require('../assets/fonts/NunitoSans-Italic.ttf'),
-    'NunitoSans-Medium': require('../assets/fonts/NunitoSans-Regular.ttf'),
-    'NunitoSans-SemiBold': require('../assets/fonts/NunitoSans-Regular.ttf'),
-    'NunitoSans-Bold': require('../assets/fonts/NunitoSans-Regular.ttf'),
-    'NunitoSans-ExtraBold': require('../assets/fonts/NunitoSans-Regular.ttf'),
   });
 
   if (!fontsLoaded) {

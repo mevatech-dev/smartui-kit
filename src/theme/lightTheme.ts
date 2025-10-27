@@ -32,10 +32,10 @@ export const lightTheme = {
   typography: {
     fontFamily: {
       regular: 'NunitoSans-Regular',
-      medium: 'NunitoSans-Medium',
-      semiBold: 'NunitoSans-SemiBold',
-      bold: 'NunitoSans-Bold',
-      extraBold: 'NunitoSans-ExtraBold',
+      medium: 'NunitoSans-Regular',
+      semiBold: 'NunitoSans-Regular',
+      bold: 'NunitoSans-Regular',
+      extraBold: 'NunitoSans-Regular',
     },
     fontSize: { h1: 26, h2: 20, h3: 18, body: 14, small: 13, tiny: 12 }
   },
