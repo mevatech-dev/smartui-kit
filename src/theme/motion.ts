@@ -1,0 +1,1 @@
+export const motion = { timing:{fast:150,normal:300,slow:600}, easing:{ inOut:[0.4,0,0.2,1], easeOut:[0,0,0.2,1], easeIn:[0.4,0,1,1] }, spring:{ mass:0.9,damping:12,stiffness:150 } };
