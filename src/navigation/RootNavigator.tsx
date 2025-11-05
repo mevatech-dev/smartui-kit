@@ -9,6 +9,7 @@ import LayoutDemoScreen from '@/screens/LayoutDemoScreen';
 import MotionDemoScreen from '@/screens/MotionDemoScreen';
 import AdaptiveDemoScreen from '@/screens/AdaptiveDemoScreen';
 import SmartHomeScreen from '@/screens/SmartHomeScreen';
+import { ComponentShowcaseScreen } from '@/screens/ComponentShowcaseScreen';
 import { useThemeStore } from '@/store/ThemeStore';
 
 const Stack = createNativeStackNavigator();
@@ -27,10 +28,12 @@ const Tabs = () => {
         if (route.name === 'Progress') icon = 'activity';
         if (route.name === 'Forms') icon = 'edit';
         if (route.name === 'Effects') icon = 'zap';
+        if (route.name === 'Components') icon = 'box';
         return <Feather name={icon} size={size} color={color} />;
       }
     })}>
       <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Components" component={ComponentShowcaseScreen} />
       <Tab.Screen name="Progress" component={LayoutDemoScreen} />
       <Tab.Screen name="Forms" component={FormScreen} />
       <Tab.Screen name="Effects" component={MotionDemoScreen} />
