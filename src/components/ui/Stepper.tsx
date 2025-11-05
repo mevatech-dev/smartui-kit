@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { useTheme } from 'styled-components/native';
+import styled, { useTheme, DefaultTheme } from 'styled-components/native';
 import { ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { IoniconsName } from '@/types/icons';
@@ -49,16 +49,14 @@ export const Stepper: React.FC<StepperProps> = ({
                 <StepCircle status={status} color={activeColor}>
                   {status === 'completed' ? (
                     <Ionicons name="checkmark" size={16} color={theme.colors.background} />
-                  ) : showStepNumbers || step.icon ? (
-                    step.icon && status !== 'active' ? (
-                      <Ionicons
-                        name={step.icon}
-                        size={16}
-                        color={status === 'active' ? theme.colors.background : theme.colors.textSecondary}
-                      />
-                    ) : (
-                      <StepNumber status={status}>{index + 1}</StepNumber>
-                    )
+                  ) : step.icon ? (
+                    <Ionicons
+                      name={step.icon}
+                      size={16}
+                      color={status === 'active' ? theme.colors.background : theme.colors.textSecondary}
+                    />
+                  ) : showStepNumbers ? (
+                    <StepNumber status={status}>{index + 1}</StepNumber>
                   ) : null}
                 </StepCircle>
                 {!isLast && <VerticalConnector status={status} color={activeColor} />}
@@ -88,16 +86,14 @@ export const Stepper: React.FC<StepperProps> = ({
             <StepCircle status={status} color={activeColor}>
               {status === 'completed' ? (
                 <Ionicons name="checkmark" size={16} color={theme.colors.background} />
-              ) : showStepNumbers || step.icon ? (
-                step.icon && status !== 'active' ? (
-                  <Ionicons
-                    name={step.icon}
-                    size={16}
-                    color={status === 'active' ? theme.colors.background : theme.colors.textSecondary}
-                  />
-                ) : (
-                  <StepNumber status={status}>{index + 1}</StepNumber>
-                )
+              ) : step.icon ? (
+                <Ionicons
+                  name={step.icon}
+                  size={16}
+                  color={status === 'active' ? theme.colors.background : theme.colors.textSecondary}
+                />
+              ) : showStepNumbers ? (
+                <StepNumber status={status}>{index + 1}</StepNumber>
               ) : null}
             </StepCircle>
 
@@ -113,7 +109,7 @@ export const Stepper: React.FC<StepperProps> = ({
 
 const getColorValue = (
   color: 'primary' | 'secondary' | 'success' | 'accent',
-  theme: any
+  theme: DefaultTheme
 ): string => {
   const colors = {
     primary: theme.colors.primary,
