@@ -24,10 +24,21 @@ import {
   BottomSheet,
   ActionSheet,
   Card,
+  Menu,
+  EmptyState,
   Badge,
   NotificationBadge,
   Avatar,
   AvatarGroup,
+  Skeleton,
+  SkeletonText,
+  SkeletonCard,
+  SkeletonList,
+  SkeletonGrid,
+  SkeletonProfile,
+  Chip,
+  Progress,
+  CircularProgress,
   Divider,
   ToastProvider,
   useToast,
@@ -38,17 +49,13 @@ import {
   TabPanel,
   TabPanels,
   SegmentedControl,
+  Stepper,
   Accordion,
   AccordionItem,
   ControlledAccordionItem,
-  Skeleton,
-  SkeletonText,
-  SkeletonCard,
-  SkeletonList,
-  SkeletonGrid,
-  SkeletonProfile,
-  Chip,
   IconButton,
+  FloatingActionButton,
+  SwipeableItem,
   Alert,
 } from '@/components';
 ```
@@ -74,19 +81,25 @@ import {
 - **BottomSheet** - Slide-up sheet with swipe to dismiss
 - **ActionSheet** - iOS-style action menu with options
 - **Card** - Feature-rich card with header, footer, and actions
+- **Menu** - Dropdown menu with positioning and dividers
+- **EmptyState** - Empty screen component with icons, images, and actions
 
 ### Display Components
 - **Badge** - Status badges and notification badges
 - **Avatar** - User avatar with status indicator and groups
 - **Skeleton** - Loading placeholders with multiple variants
 - **Chip** - Compact elements for tags, filters, and selections
+- **Progress** - Linear and circular progress indicators with animations
 
 ### Navigation Components
 - **Tabs** - Tab navigation with multiple variants
 - **SegmentedControl** - iOS-style segmented control for grouped selections
+- **Stepper** - Multi-step workflow indicator (horizontal and vertical)
 
 ### Interactive Components
 - **IconButton** - Icon-only button with multiple variants and animations
+- **FloatingActionButton** - Material Design FAB with extended mode and speed dial
+- **SwipeableItem** - Swipeable list item with left and right actions
 
 ### Feedback Components
 - **Toast** - Toast notifications with provider
@@ -935,6 +948,353 @@ const [rating, setRating] = useState(3.5);
 - `color?: 'primary' | 'secondary' | 'accent' | 'warning'` - Star color (warning falls back to accent if theme.colors.warning not available)
 - `showValue?: boolean` - Show numeric value (default: false)
 - `containerStyle?: ViewStyle` - Custom container styles
+
+---
+
+### Progress
+
+```typescript
+import { Progress, CircularProgress } from '@/components';
+
+// Linear progress bar
+<Progress
+  value={progress}
+  size="medium"
+  color="primary"
+  showLabel
+/>
+
+<Progress
+  value={75}
+  size="large"
+  color="success"
+  showLabel
+/>
+
+// Circular progress indicator
+<CircularProgress
+  value={progress}
+  size="large"
+  color="accent"
+  showLabel
+  thickness={6}
+/>
+
+<CircularProgress
+  value={60}
+  size="medium"
+  color="primary"
+  showLabel
+/>
+```
+
+**Progress Props:**
+- `value: number` - Progress value (0-100)
+- `size?: 'small' | 'medium' | 'large'` - Bar height
+- `color?: 'primary' | 'secondary' | 'success' | 'error' | 'accent'` - Progress color
+- `showLabel?: boolean` - Show percentage label (default: false)
+- `indeterminate?: boolean` - Indeterminate mode (default: false, animation not yet implemented)
+- `containerStyle?: ViewStyle` - Custom container styles
+
+**CircularProgress Props:**
+- `value: number` - Progress value (0-100)
+- `size?: 'small' | 'medium' | 'large'` - Circle diameter (40/60/80px)
+- `color?: 'primary' | 'secondary' | 'success' | 'error' | 'accent'` - Progress color
+- `showLabel?: boolean` - Show centered percentage (default: false)
+- `thickness?: number` - Stroke width (default: 4)
+- `indeterminate?: boolean` - Indeterminate mode (default: false, animation not yet implemented)
+- `containerStyle?: ViewStyle` - Custom container styles
+
+---
+
+### Stepper
+
+```typescript
+import { Stepper } from '@/components';
+
+const [currentStep, setCurrentStep] = useState(1);
+
+// Horizontal stepper
+<Stepper
+  steps={[
+    { label: 'Account', description: 'Create your account' },
+    { label: 'Profile', description: 'Complete your profile', icon: 'person' },
+    { label: 'Verify', description: 'Verify email', icon: 'checkmark-circle' },
+    { label: 'Complete', description: 'All done!', icon: 'rocket' },
+  ]}
+  currentStep={currentStep}
+  onStepPress={(index) => setCurrentStep(index)}
+  orientation="horizontal"
+  color="primary"
+  showStepNumbers
+/>
+
+// Vertical stepper
+<Stepper
+  steps={[
+    { label: 'Order Placed', description: 'Your order has been received', status: 'completed' },
+    { label: 'Processing', description: 'We are preparing your order', status: 'active' },
+    { label: 'Shipped', description: 'Package is on the way', status: 'upcoming' },
+    { label: 'Delivered', description: 'Enjoy your purchase!', status: 'upcoming' },
+  ]}
+  currentStep={1}
+  orientation="vertical"
+  color="success"
+  variant="default"
+/>
+```
+
+**Props:**
+- `steps: Step[]` - Array of step configurations
+- `currentStep: number` - Active step index (0-based)
+- `onStepPress?: (index: number) => void` - Step click handler (for interactive stepper)
+- `orientation?: 'horizontal' | 'vertical'` - Layout direction (default: 'horizontal')
+- `variant?: 'default' | 'simple'` - Visual style (default: 'default')
+- `color?: 'primary' | 'secondary' | 'accent'` - Active step color (default: 'primary')
+- `showStepNumbers?: boolean` - Show step numbers (default: true)
+- `allowStepClick?: boolean` - Enable step clicking (default: false)
+- `containerStyle?: ViewStyle` - Custom container styles
+
+**Step Interface:**
+- `label: string` - Step title
+- `description?: string` - Optional subtitle/description
+- `icon?: IoniconsName` - Optional icon (shown on active step if provided)
+- `status?: 'completed' | 'active' | 'upcoming'` - Override auto-calculated status
+
+**Status Logic:**
+- Steps before `currentStep`: status = 'completed'
+- Step at `currentStep`: status = 'active'
+- Steps after `currentStep`: status = 'upcoming'
+- Icon priority: checkmark (completed) > custom icon > step number
+
+---
+
+### FloatingActionButton
+
+```typescript
+import { FloatingActionButton } from '@/components';
+
+// Simple FAB
+<FloatingActionButton
+  icon="add"
+  onPress={() => console.log('Pressed')}
+  position="bottom-right"
+  size="medium"
+  color="primary"
+/>
+
+// Extended FAB with label
+<FloatingActionButton
+  icon="create"
+  label="Compose"
+  extended
+  onPress={() => console.log('Compose')}
+  position="bottom-center"
+  size="large"
+  color="accent"
+/>
+
+// Speed dial FAB with actions
+<FloatingActionButton
+  icon="add"
+  actions={[
+    { icon: 'camera', label: 'Photo', onPress: () => console.log('Photo') },
+    { icon: 'image', label: 'Gallery', onPress: () => console.log('Gallery') },
+    { icon: 'document', label: 'File', onPress: () => console.log('File') },
+  ]}
+  position="bottom-right"
+  color="primary"
+/>
+```
+
+**Props:**
+- `icon: IoniconsName` - Main FAB icon
+- `onPress?: () => void` - Press handler (not used if actions provided)
+- `label?: string` - Text label (only shown when extended=true)
+- `extended?: boolean` - Show label alongside icon (default: false)
+- `position?: 'bottom-right' | 'bottom-left' | 'bottom-center' | 'top-right' | 'top-left'` - Screen position (default: 'bottom-right')
+- `size?: 'small' | 'medium' | 'large'` - FAB size (default: 'medium')
+- `color?: 'primary' | 'secondary' | 'accent'` - Background color (default: 'primary')
+- `actions?: FABAction[]` - Speed dial action items
+- `containerStyle?: ViewStyle` - Custom container styles
+- Extends `TouchableOpacityProps` - All TouchableOpacity props supported
+
+**FABAction Interface:**
+- `icon: IoniconsName` - Action icon
+- `label: string` - Action label
+- `onPress: () => void` - Action press handler
+
+**Features:**
+- Press animation with scale effect
+- Speed dial: tapping FAB with actions shows/hides action menu
+- Dynamic positioning for all 5 positions
+- Extended mode for prominent actions with labels
+
+---
+
+### Menu
+
+```typescript
+import { Menu } from '@/components';
+
+const [menuVisible, setMenuVisible] = useState(false);
+
+<Menu
+  visible={menuVisible}
+  onClose={() => setMenuVisible(false)}
+  trigger={
+    <IconButton
+      icon="ellipsis-vertical"
+      onPress={() => setMenuVisible(true)}
+    />
+  }
+  items={[
+    { label: 'Edit', icon: 'create', onPress: () => console.log('Edit') },
+    { label: 'Share', icon: 'share', onPress: () => console.log('Share') },
+    { type: 'divider' },
+    { label: 'Delete', icon: 'trash', destructive: true, onPress: () => console.log('Delete') },
+  ]}
+  placement="bottom-end"
+/>
+```
+
+**Props:**
+- `visible: boolean` - Control menu visibility
+- `onClose: () => void` - Called when menu closes
+- `trigger: React.ReactNode` - Trigger element (button, icon, etc.)
+- `items: MenuItem[]` - Menu items array
+- `placement?: 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end'` - Menu position relative to trigger (default: 'bottom-start')
+- `containerStyle?: ViewStyle` - Custom container styles
+
+**MenuItem Interface:**
+```typescript
+type MenuItem =
+  | { label: string; icon?: IoniconsName; onPress: () => void; destructive?: boolean; disabled?: boolean }
+  | { type: 'divider' };
+```
+
+**MenuItem Properties:**
+- `label: string` - Item text
+- `onPress: () => void` - Click handler
+- `icon?: IoniconsName` - Optional icon
+- `destructive?: boolean` - Use destructive (red) styling
+- `disabled?: boolean` - Disable item
+- `type: 'divider'` - Renders a divider line (alternative to menu item)
+
+---
+
+### EmptyState
+
+```typescript
+import { EmptyState } from '@/components';
+
+// Simple empty state
+<EmptyState
+  icon="folder-open"
+  title="No Items Found"
+  description="There are no items to display at the moment."
+/>
+
+// With action button
+<EmptyState
+  icon="cloud-offline"
+  title="No Connection"
+  description="Unable to load data. Please check your internet connection."
+  variant="standard"
+  action={{
+    label: 'Retry',
+    onPress: () => console.log('Retry'),
+  }}
+/>
+
+// With illustration and primary action
+<EmptyState
+  icon="search"
+  title="No Results"
+  description="We couldn't find anything matching your search."
+  variant="illustration"
+  primaryAction={{
+    label: 'Clear Search',
+    onPress: () => console.log('Clear'),
+  }}
+  secondaryAction={{
+    label: 'Browse All',
+    onPress: () => console.log('Browse'),
+  }}
+/>
+```
+
+**Props:**
+- `icon: IoniconsName` - Display icon
+- `title: string` - Main heading
+- `description?: string` - Subtitle/explanation
+- `variant?: 'standard' | 'compact' | 'illustration'` - Visual style (default: 'standard')
+- `action?: { label: string; onPress: () => void }` - Single action button
+- `primaryAction?: { label: string; onPress: () => void }` - Primary action (filled button)
+- `secondaryAction?: { label: string; onPress: () => void }` - Secondary action (outlined button)
+- `containerStyle?: ViewStyle` - Custom container styles
+
+**Variants:**
+- `standard`: Regular size icon (80px), normal spacing
+- `compact`: Same as standard but more condensed
+- `illustration`: Large icon (120px), generous spacing for emphasis
+
+---
+
+### SwipeableItem
+
+```typescript
+import { SwipeableItem } from '@/components';
+
+<SwipeableItem
+  leftActions={[
+    {
+      icon: 'archive',
+      backgroundColor: '#4BB4FF',
+      onPress: () => console.log('Archived'),
+    },
+  ]}
+  rightActions={[
+    {
+      icon: 'trash',
+      backgroundColor: '#E74C3C',
+      onPress: () => console.log('Deleted'),
+    },
+    {
+      icon: 'star',
+      backgroundColor: '#F39C12',
+      onPress: () => console.log('Starred'),
+    },
+  ]}
+  onSwipeLeft={() => console.log('Swiped left')}
+  onSwipeRight={() => console.log('Swiped right')}
+>
+  <View style={{ padding: 16, backgroundColor: 'white' }}>
+    <Text>Swipe me left or right</Text>
+  </View>
+</SwipeableItem>
+```
+
+**Props:**
+- `children: React.ReactNode` - Main content
+- `leftActions?: SwipeAction[]` - Actions revealed when swiping right
+- `rightActions?: SwipeAction[]` - Actions revealed when swiping left
+- `onSwipeLeft?: () => void` - Called when fully swiped left
+- `onSwipeRight?: () => void` - Called when fully swiped right
+- `swipeThreshold?: number` - Distance to trigger action (default: 100)
+- `containerStyle?: ViewStyle` - Custom container styles
+
+**SwipeAction Interface:**
+- `icon: IoniconsName` - Action icon
+- `backgroundColor: string` - Action button background color
+- `onPress: () => void` - Action press handler
+
+**Features:**
+- Smooth gesture-based swiping with PanResponder
+- Multiple actions on each side
+- Auto-reset animation after action
+- Threshold-based triggering
+- Visual feedback with action buttons
 
 ---
 
