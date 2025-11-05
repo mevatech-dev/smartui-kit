@@ -20,6 +20,17 @@ import {
   Skeleton,
   SkeletonText,
   ThemedButton,
+  Slider,
+  RangeSlider,
+  SearchBar,
+  Rating,
+  Card,
+  BottomSheet,
+  ActionSheet,
+  SegmentedControl,
+  IconButton,
+  Chip,
+  Alert,
 } from '@/components';
 import { useToast } from '@/components/ui/Toast';
 
@@ -31,6 +42,12 @@ export const ComponentShowcaseScreen = () => {
   const [selectedOption, setSelectedOption] = useState('option1');
   const [selectedFruit, setSelectedFruit] = useState('');
   const [activeTab, setActiveTab] = useState('components');
+  const [sliderValue, setSliderValue] = useState(50);
+  const [searchText, setSearchText] = useState('');
+  const [rating, setRating] = useState(3.5);
+  const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
+  const [actionSheetVisible, setActionSheetVisible] = useState(false);
+  const [segmentValue, setSegmentValue] = useState('all');
   const { showToast } = useToast();
 
   const dropdownOptions = [
@@ -130,9 +147,120 @@ export const ComponentShowcaseScreen = () => {
                   searchable
                 />
               </ComponentCard>
+
+              <ComponentCard>
+                <ComponentName>Slider</ComponentName>
+                <Slider
+                  value={sliderValue}
+                  min={0}
+                  max={100}
+                  onValueChange={setSliderValue}
+                  showValue
+                  color="primary"
+                />
+              </ComponentCard>
+
+              <ComponentCard>
+                <ComponentName>SearchBar</ComponentName>
+                <SearchBar
+                  value={searchText}
+                  onChangeText={setSearchText}
+                  placeholder="Search components..."
+                  variant="rounded"
+                  showCancel
+                />
+              </ComponentCard>
+
+              <ComponentCard>
+                <ComponentName>Rating</ComponentName>
+                <Rating
+                  value={rating}
+                  onChange={setRating}
+                  allowHalf
+                  showValue
+                  color="accent"
+                />
+              </ComponentCard>
+
+              <ComponentCard>
+                <ComponentName>SegmentedControl</ComponentName>
+                <SegmentedControl
+                  options={[
+                    { label: 'All', value: 'all' },
+                    { label: 'Active', value: 'active' },
+                    { label: 'Done', value: 'done' },
+                  ]}
+                  value={segmentValue}
+                  onChange={setSegmentValue}
+                  variant="default"
+                  color="primary"
+                />
+              </ComponentCard>
             </Section>
 
             <Divider>Display Components</Divider>
+
+            <Section>
+              <ComponentCard>
+                <ComponentName>Card</ComponentName>
+                <Card
+                  variant="outlined"
+                  title="Example Card"
+                  subtitle="With header and footer"
+                  headerIcon="star"
+                  actions={[
+                    { label: 'View', onPress: () => showToast('View clicked', 'info') },
+                    { label: 'Edit', onPress: () => showToast('Edit clicked', 'info') },
+                  ]}
+                >
+                  <ExampleText>This is a card with customizable header, footer, and actions.</ExampleText>
+                </Card>
+              </ComponentCard>
+
+              <ComponentCard>
+                <ComponentName>Chip</ComponentName>
+                <BadgeRow>
+                  <Chip label="React Native" color="primary" variant="filled" size="medium" />
+                  <Chip label="TypeScript" color="accent" variant="outlined" size="medium" icon="logo-javascript" />
+                  <Chip label="Remove" color="error" variant="filled" size="small" onDelete={() => showToast('Deleted', 'success')} />
+                </BadgeRow>
+              </ComponentCard>
+
+              <ComponentCard>
+                <ComponentName>Alert</ComponentName>
+                <Alert
+                  type="info"
+                  message="This is an informational alert with theme integration"
+                  variant="standard"
+                  showIcon
+                />
+              </ComponentCard>
+
+              <ComponentCard>
+                <ComponentName>IconButton</ComponentName>
+                <BadgeRow>
+                  <IconButton icon="heart" variant="filled" color="error" size="medium" onPress={() => showToast('Liked!', 'success')} />
+                  <IconButton icon="share" variant="outlined" color="primary" size="medium" onPress={() => showToast('Share', 'info')} />
+                  <IconButton icon="notifications" variant="default" color="accent" size="large" badge={3} />
+                </BadgeRow>
+              </ComponentCard>
+
+              <ComponentCard>
+                <ComponentName>BottomSheet & ActionSheet</ComponentName>
+                <BadgeRow>
+                  <ThemedButton
+                    title="Open BottomSheet"
+                    onPress={() => setBottomSheetVisible(true)}
+                    variant="outlined"
+                  />
+                  <ThemedButton
+                    title="Open ActionSheet"
+                    onPress={() => setActionSheetVisible(true)}
+                    variant="outlined"
+                  />
+                </BadgeRow>
+              </ComponentCard>
+            </Section>
 
             <Section>
               <ComponentCard>
@@ -261,7 +389,7 @@ export const ComponentShowcaseScreen = () => {
             <Section>
               <SectionTitle>About SmartUI Kit</SectionTitle>
               <InfoCard>
-                <InfoText>✨ 14 Custom UI Components</InfoText>
+                <InfoText>✨ 24 Custom UI Components</InfoText>
                 <InfoText>🎨 Full Theme Integration</InfoText>
                 <InfoText>⚡ React Native Reanimated</InfoText>
                 <InfoText>📘 TypeScript Support</InfoText>
@@ -273,6 +401,47 @@ export const ComponentShowcaseScreen = () => {
           </ScrollView>
         </TabPanel>
       </TabPanels>
+
+      <BottomSheet
+        visible={bottomSheetVisible}
+        onClose={() => setBottomSheetVisible(false)}
+        title="Example Bottom Sheet"
+        size="medium"
+      >
+        <ExampleText style={{ marginBottom: 16 }}>
+          This is a bottom sheet that slides from the bottom with smooth animations.
+        </ExampleText>
+        <ThemedButton
+          title="Close"
+          onPress={() => setBottomSheetVisible(false)}
+          variant="primary"
+        />
+      </BottomSheet>
+
+      <ActionSheet
+        visible={actionSheetVisible}
+        onClose={() => setActionSheetVisible(false)}
+        title="Choose an Action"
+        message="Select one of the following options"
+        options={[
+          {
+            label: 'Edit',
+            icon: 'create',
+            onPress: () => showToast('Edit selected', 'info'),
+          },
+          {
+            label: 'Share',
+            icon: 'share',
+            onPress: () => showToast('Share selected', 'info'),
+          },
+          {
+            label: 'Delete',
+            icon: 'trash',
+            destructive: true,
+            onPress: () => showToast('Delete selected', 'error'),
+          },
+        ]}
+      />
     </Container>
   );
 };
