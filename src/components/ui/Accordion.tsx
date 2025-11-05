@@ -9,6 +9,7 @@ import Animated, {
   interpolate,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
+import { IoniconsName } from '@/types/icons';
 
 // Enable LayoutAnimation on Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -18,7 +19,7 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 interface AccordionItemProps {
   title: string;
   children: React.ReactNode;
-  icon?: string;
+  icon?: IoniconsName;
   defaultExpanded?: boolean;
   disabled?: boolean;
   onToggle?: (expanded: boolean) => void;
@@ -78,7 +79,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
       >
         {icon && (
           <IconWrapper>
-            <Ionicons name={icon as any} size={20} color={theme.colors.textPrimary} />
+            <Ionicons name={icon} size={20} color={theme.colors.textPrimary} />
           </IconWrapper>
         )}
 
@@ -200,7 +201,7 @@ export const ControlledAccordionItem: React.FC<ControlledAccordionItemProps> = (
       >
         {icon && (
           <IconWrapper>
-            <Ionicons name={icon as any} size={20} color={theme.colors.textPrimary} />
+            <Ionicons name={icon} size={20} color={theme.colors.textPrimary} />
           </IconWrapper>
         )}
 

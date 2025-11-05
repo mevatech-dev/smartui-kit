@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { TouchableOpacity, FlatList, ViewStyle, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { IoniconsName } from '@/types/icons';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -11,7 +12,7 @@ import Animated, {
 export interface DropdownOption {
   label: string;
   value: string;
-  icon?: string;
+  icon?: IoniconsName;
   disabled?: boolean;
 }
 
@@ -126,7 +127,7 @@ export const Dropdown: React.FC<Props> = ({
                   isSelected={item.value === value}
                 >
                   {item.icon && (
-                    <Ionicons name={item.icon as any} size={20} color="#3C4A59" />
+                    <Ionicons name={item.icon} size={20} color="#3C4A59" />
                   )}
                   <OptionText
                     isSelected={item.value === value}

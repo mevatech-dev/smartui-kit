@@ -2,13 +2,14 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components/native';
 import { ViewStyle, ImageSourcePropType } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { IoniconsName } from '@/types/icons';
 
 interface Props {
   source?: ImageSourcePropType | string;
   name?: string;
   size?: 'small' | 'medium' | 'large' | 'xlarge' | number;
   shape?: 'circle' | 'rounded' | 'square';
-  icon?: string;
+  icon?: IoniconsName;
   backgroundColor?: string;
   textColor?: string;
   status?: 'online' | 'offline' | 'busy' | 'away';
@@ -48,7 +49,7 @@ export const Avatar: React.FC<Props> = ({
     if (icon) {
       return (
         <Ionicons
-          name={icon as any}
+          name={icon}
           size={avatarSize * 0.5}
           color={textColor}
         />
@@ -111,6 +112,7 @@ export const Avatar: React.FC<Props> = ({
 // AvatarGroup component for displaying multiple avatars
 interface AvatarGroupProps {
   avatars: Array<{
+    id: string | number;
     source?: ImageSourcePropType | string;
     name?: string;
   }>;
@@ -138,7 +140,7 @@ export const AvatarGroup: React.FC<AvatarGroupProps> = ({
     <GroupContainer style={containerStyle}>
       {displayAvatars.map((avatar, index) => (
         <AvatarWrapper
-          key={index}
+          key={avatar.id}
           spacing={spacing}
           zIndex={displayAvatars.length - index}
         >
