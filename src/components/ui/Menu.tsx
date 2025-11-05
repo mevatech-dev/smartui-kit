@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import { Modal, TouchableWithoutFeedback, ViewStyle } from 'react-native';
+import { Modal, TouchableWithoutFeedback, ViewStyle, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { IoniconsName } from '@/types/icons';
 
@@ -29,7 +29,7 @@ export const Menu: React.FC<MenuProps> = ({
   const theme = useTheme();
   const [visible, setVisible] = useState(false);
   const [triggerLayout, setTriggerLayout] = useState({ x: 0, y: 0, width: 0, height: 0 });
-  const triggerRef = useRef<any>(null);
+  const triggerRef = useRef<View>(null);
 
   const handleOpen = () => {
     if (triggerRef.current) {

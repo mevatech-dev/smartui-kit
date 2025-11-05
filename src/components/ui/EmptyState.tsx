@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import { ViewStyle, ImageSourcePropType } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { IoniconsName } from '@/types/icons';
@@ -31,6 +31,8 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   variant = 'default',
   containerStyle,
 }) => {
+  const theme = useTheme();
+
   return (
     <Container variant={variant} style={containerStyle}>
       {variant !== 'minimal' && (
@@ -38,9 +40,9 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
           {image ? (
             <IllustrationImage source={image} resizeMode="contain" />
           ) : icon ? (
-            <Ionicons name={icon} size={variant === 'illustration' ? 120 : 80} color="#CBD5E0" />
+            <Ionicons name={icon} size={variant === 'illustration' ? 120 : 80} color={theme.colors.border} />
           ) : (
-            <Ionicons name="file-tray-outline" size={80} color="#CBD5E0" />
+            <Ionicons name="file-tray-outline" size={80} color={theme.colors.border} />
           )}
         </IconContainer>
       )}

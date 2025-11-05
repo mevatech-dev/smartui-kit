@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { useTheme } from 'styled-components/native';
+import styled, { useTheme, DefaultTheme } from 'styled-components/native';
 import { TouchableOpacityProps } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { IoniconsName } from '@/types/icons';
@@ -72,7 +72,7 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
   return (
     <FABContainer position={position}>
       {actions && isExpanded && (
-        <ActionsContainer>
+        <ActionsContainer position={position}>
           {actions.map((action, index) => (
             <ActionItemContainer key={index}>
               {action.label && <ActionLabel>{action.label}</ActionLabel>}
@@ -92,21 +92,21 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
         </ActionsContainer>
       )}
 
-      <AnimatedFAB style={animatedStyle} as={FABButton}>
-        <FABButton
-          onPress={handlePress}
-          onPressIn={handlePressIn}
-          onPressOut={handlePressOut}
-          activeOpacity={0.9}
-          disabled={disabled}
-          size={fabSize}
-          color={fabColor}
-          extended={extended}
-          {...rest}
-        >
-          <Ionicons name={icon} size={iconSize} color={theme.colors.background} />
-          {extended && label && <FABLabel>{label}</FABLabel>}
-        </FABButton>
+      <AnimatedFAB
+        style={animatedStyle}
+        as={FABButton}
+        onPress={handlePress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        activeOpacity={0.9}
+        disabled={disabled}
+        size={fabSize}
+        color={fabColor}
+        extended={extended}
+        {...rest}
+      >
+        <Ionicons name={icon} size={iconSize} color={theme.colors.background} />
+        {extended && label && <FABLabel>{label}</FABLabel>}
       </AnimatedFAB>
     </FABContainer>
   );
@@ -114,7 +114,7 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
 
 const getColorValue = (
   color: 'primary' | 'secondary' | 'success' | 'error' | 'accent',
-  theme: any
+  theme: DefaultTheme
 ): string => {
   const colors = {
     primary: theme.colors.primary,
@@ -198,11 +198,24 @@ const FABLabel = styled.Text`
   text-transform: uppercase;
 `;
 
-const ActionsContainer = styled.View`
+const ActionsContainer = styled.View<{ position: string }>`
   position: absolute;
-  bottom: 72px;
-  right: 0;
   gap: 12px;
+  ${({ position }) => {
+    const [vertical, horizontal] = position.split('-');
+    let styles = '';
+
+    // Vertical positioning
+    if (vertical === 'bottom') styles += 'bottom: 72px;';
+    if (vertical === 'top') styles += 'top: 72px;';
+
+    // Horizontal positioning
+    if (horizontal === 'right') styles += 'right: 0; align-items: flex-end;';
+    if (horizontal === 'left') styles += 'left: 0; align-items: flex-start;';
+    if (horizontal === 'center') styles += 'align-self: center; align-items: center;';
+
+    return styles;
+  }}
 `;
 
 const ActionItemContainer = styled.View`

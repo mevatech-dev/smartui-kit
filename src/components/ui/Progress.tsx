@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styled, { useTheme } from 'styled-components/native';
+import styled, { useTheme, DefaultTheme } from 'styled-components/native';
 import { ViewStyle } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -143,7 +143,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
 
 const getColorValue = (
   color: 'primary' | 'secondary' | 'success' | 'error' | 'accent',
-  theme: any
+  theme: DefaultTheme
 ): string => {
   const colors = {
     primary: theme.colors.primary,
