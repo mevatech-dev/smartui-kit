@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import { ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { IoniconsName } from '@/types/icons';
@@ -39,6 +39,7 @@ export const Alert: React.FC<AlertProps> = ({
   containerStyle,
 }) => {
   const [isVisible, setIsVisible] = useState(true);
+  const theme = useTheme();
   const opacity = useSharedValue(1);
   const height = useSharedValue(1);
 
@@ -61,6 +62,8 @@ export const Alert: React.FC<AlertProps> = ({
   const defaultIcon = getDefaultIcon(type);
   const displayIcon = icon || (showIcon ? defaultIcon : undefined);
 
+  const iconColor = getIconColor(type, variant, theme);
+
   return (
     <AnimatedContainer style={[animatedStyle, containerStyle]}>
       <AlertContainer type={type} variant={variant}>
@@ -69,7 +72,7 @@ export const Alert: React.FC<AlertProps> = ({
             <Ionicons
               name={displayIcon}
               size={24}
-              color={getIconColor(type, variant)}
+              color={iconColor}
             />
           </IconWrapper>
         )}
@@ -98,7 +101,7 @@ export const Alert: React.FC<AlertProps> = ({
             <Ionicons
               name="close"
               size={20}
-              color={getIconColor(type, variant)}
+              color={iconColor}
             />
           </CloseButton>
         )}
@@ -107,60 +110,60 @@ export const Alert: React.FC<AlertProps> = ({
   );
 };
 
-const getDefaultIcon = (type: string): IoniconsName => {
-  const icons: Record<string, IoniconsName> = {
+const getDefaultIcon = (type: 'info' | 'success' | 'warning' | 'error'): IoniconsName => {
+  const icons: Record<'info' | 'success' | 'warning' | 'error', IoniconsName> = {
     info: 'information-circle',
     success: 'checkmark-circle',
     warning: 'warning',
     error: 'close-circle',
   };
-  return icons[type] || 'information-circle';
+  return icons[type];
 };
 
-const getBackgroundColor = (type: string, variant: string): string => {
+const getBackgroundColor = (type: 'info' | 'success' | 'warning' | 'error', variant: 'standard' | 'filled' | 'outlined', theme: any): string => {
   if (variant === 'outlined') return 'transparent';
 
-  const backgrounds = {
-    info: variant === 'filled' ? '#4BB4FF' : '#E5F4FF',
-    success: variant === 'filled' ? '#5DD39E' : '#E8F8F0',
-    warning: variant === 'filled' ? '#FFB84C' : '#FFF4E5',
-    error: variant === 'filled' ? '#FF6B6B' : '#FFE5E5',
+  const typeColors = {
+    info: theme.colors.primary,
+    success: theme.colors.success,
+    warning: theme.colors.accent,
+    error: theme.colors.error,
   };
-  return backgrounds[type] || backgrounds.info;
+
+  if (variant === 'filled') {
+    return typeColors[type];
+  }
+
+  // For standard variant, use lighter version from surface
+  return theme.colors.surface;
 };
 
-const getTextColor = (type: string, variant: string): string => {
-  if (variant === 'filled') return '#ffffff';
+const getTextColor = (type: 'info' | 'success' | 'warning' | 'error', variant: 'standard' | 'filled' | 'outlined', theme: any): string => {
+  if (variant === 'filled') return theme.colors.background;
 
-  const colors = {
-    info: '#1E5A8E',
-    success: '#1E7F4B',
-    warning: '#9A5A00',
-    error: '#C41E1E',
-  };
-  return colors[type] || colors.info;
+  return theme.colors.textPrimary;
 };
 
-const getIconColor = (type: string, variant: string): string => {
-  if (variant === 'filled') return '#ffffff';
+const getIconColor = (type: 'info' | 'success' | 'warning' | 'error', variant: 'standard' | 'filled' | 'outlined', theme: any): string => {
+  if (variant === 'filled') return theme.colors.background;
 
   const colors = {
-    info: '#4BB4FF',
-    success: '#5DD39E',
-    warning: '#FFB84C',
-    error: '#FF6B6B',
+    info: theme.colors.primary,
+    success: theme.colors.success,
+    warning: theme.colors.accent,
+    error: theme.colors.error,
   };
-  return colors[type] || colors.info;
+  return colors[type];
 };
 
-const getBorderColor = (type: string): string => {
+const getBorderColor = (type: 'info' | 'success' | 'warning' | 'error', theme: any): string => {
   const colors = {
-    info: '#4BB4FF',
-    success: '#5DD39E',
-    warning: '#FFB84C',
-    error: '#FF6B6B',
+    info: theme.colors.primary,
+    success: theme.colors.success,
+    warning: theme.colors.accent,
+    error: theme.colors.error,
   };
-  return colors[type] || colors.info;
+  return colors[type];
 };
 
 const AnimatedContainer = styled(Animated.View)``;
@@ -168,11 +171,11 @@ const AnimatedContainer = styled(Animated.View)``;
 const AlertContainer = styled.View<{ type: string; variant: string }>`
   flex-direction: row;
   align-items: flex-start;
-  background-color: ${({ type, variant }) => getBackgroundColor(type, variant)};
+  background-color: ${({ type, variant, theme }) => getBackgroundColor(type as any, variant as any, theme)};
   border-radius: ${({ theme }) => theme.radius.md}px;
   padding: ${({ theme }) => theme.spacing.md}px;
   border-width: ${({ variant }) => (variant === 'outlined' ? '1px' : '0px')};
-  border-color: ${({ type }) => getBorderColor(type)};
+  border-color: ${({ type, theme }) => getBorderColor(type as any, theme)};
   gap: ${({ theme }) => theme.spacing.md}px;
 `;
 
@@ -188,13 +191,13 @@ const ContentWrapper = styled.View`
 const AlertTitle = styled.Text<{ type: string; variant: string }>`
   font-family: ${({ theme }) => theme.typography.fontFamily.bold};
   font-size: ${({ theme }) => theme.typography.fontSize.body}px;
-  color: ${({ type, variant }) => getTextColor(type, variant)};
+  color: ${({ type, variant, theme }) => getTextColor(type as any, variant as any, theme)};
 `;
 
 const AlertMessage = styled.Text<{ type: string; variant: string }>`
   font-family: ${({ theme }) => theme.typography.fontFamily.regular};
   font-size: ${({ theme }) => theme.typography.fontSize.small}px;
-  color: ${({ type, variant }) => getTextColor(type, variant)};
+  color: ${({ type, variant, theme }) => getTextColor(type as any, variant as any, theme)};
   line-height: 18px;
 `;
 
@@ -205,7 +208,7 @@ const ActionButton = styled.TouchableOpacity`
 const ActionText = styled.Text<{ type: string; variant: string }>`
   font-family: ${({ theme }) => theme.typography.fontFamily.bold};
   font-size: ${({ theme }) => theme.typography.fontSize.small}px;
-  color: ${({ type, variant }) => getIconColor(type, variant)};
+  color: ${({ type, variant, theme }) => getIconColor(type as any, variant as any, theme)};
   text-transform: uppercase;
 `;
 

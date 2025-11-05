@@ -497,9 +497,12 @@ import { Chip } from '@/components';
 - `variant?: 'filled' | 'outlined'`
 - `color?: 'primary' | 'secondary' | 'success' | 'error' | 'accent'`
 - `size?: 'small' | 'medium'`
-- `icon?: IoniconsName`
-- `onPress?: () => void`
-- `onDelete?: () => void`
+- `icon?: IoniconsName` - Icon to display (not shown if avatar is provided)
+- `avatar?: React.ReactNode` - Custom avatar component
+- `onPress?: () => void` - Click handler for the entire chip
+- `onDelete?: () => void` - Delete handler (shows close icon)
+- `disabled?: boolean` - Disable all interactions
+- `containerStyle?: ViewStyle` - Custom container styles
 
 ---
 
@@ -537,8 +540,10 @@ import { IconButton } from '@/components';
 - `variant?: 'default' | 'filled' | 'outlined' | 'ghost'`
 - `color?: 'primary' | 'secondary' | 'success' | 'error' | 'accent' | 'neutral'`
 - `shape?: 'circle' | 'rounded' | 'square'`
-- `badge?: number`
-- `animated?: boolean`
+- `badge?: number` - Badge count (shows "99+" if > 99)
+- `animated?: boolean` - Enable press animation (default: true)
+- `disabled?: boolean` - Disable button interactions
+- Extends `TouchableOpacityProps` - Accepts all TouchableOpacity props (onPress, style, etc.)
 
 ---
 
@@ -584,10 +589,12 @@ import { Alert } from '@/components';
 - `title?: string` - Optional title
 - `type?: 'info' | 'success' | 'warning' | 'error'`
 - `variant?: 'standard' | 'filled' | 'outlined'`
-- `icon?: IoniconsName` - Custom icon
-- `showIcon?: boolean` - Show/hide icon
+- `icon?: IoniconsName` - Custom icon (overrides default icon)
+- `showIcon?: boolean` - Show/hide icon (default: true)
 - `closable?: boolean` - Enable close button
-- `action?: { label: string; onPress: () => void }`
+- `onClose?: () => void` - Callback when alert is closed
+- `action?: { label: string; onPress: () => void }` - Action button
+- `containerStyle?: ViewStyle` - Custom container styles
 
 ---
 

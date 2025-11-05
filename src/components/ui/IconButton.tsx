@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import { TouchableOpacityProps } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { IoniconsName } from '@/types/icons';
@@ -30,6 +30,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
   disabled = false,
   ...rest
 }) => {
+  const theme = useTheme();
   const scale = useSharedValue(1);
 
   const handlePressIn = () => {
@@ -69,7 +70,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
         <Ionicons
           name={icon}
           size={iconSize}
-          color={getIconColor(variant, color, disabled)}
+          color={getIconColor(variant, color, theme, disabled)}
         />
       </AnimatedButton>
 
@@ -82,46 +83,46 @@ export const IconButton: React.FC<IconButtonProps> = ({
   );
 };
 
-const getButtonSize = (size: string): number => {
+const getButtonSize = (size: 'small' | 'medium' | 'large'): number => {
   const sizes = { small: 32, medium: 40, large: 48 };
-  return sizes[size] || sizes.medium;
+  return sizes[size];
 };
 
-const getIconSize = (size: string): number => {
+const getIconSize = (size: 'small' | 'medium' | 'large'): number => {
   const sizes = { small: 18, medium: 22, large: 26 };
-  return sizes[size] || sizes.medium;
+  return sizes[size];
 };
 
-const getColorValue = (color: string): string => {
+const getColorValue = (color: 'primary' | 'secondary' | 'success' | 'error' | 'accent' | 'neutral', theme: any): string => {
   const colors = {
-    primary: '#4BB4FF',
-    secondary: '#B3E5FC',
-    success: '#5DD39E',
-    error: '#FF6B6B',
-    accent: '#FFB84C',
-    neutral: '#707E93',
+    primary: theme.colors.primary,
+    secondary: theme.colors.secondary,
+    success: theme.colors.success,
+    error: theme.colors.error,
+    accent: theme.colors.accent,
+    neutral: theme.colors.textSecondary,
   };
-  return colors[color] || colors.primary;
+  return colors[color];
 };
 
-const getIconColor = (variant: string, color: string, disabled?: boolean): string => {
-  if (disabled) return '#94A3B8';
+const getIconColor = (variant: 'default' | 'filled' | 'outlined' | 'ghost', color: 'primary' | 'secondary' | 'success' | 'error' | 'accent' | 'neutral', theme: any, disabled?: boolean): string => {
+  if (disabled) return theme.colors.textSecondary;
 
-  if (variant === 'filled') return '#ffffff';
-  if (variant === 'outlined' || variant === 'ghost') return getColorValue(color);
+  if (variant === 'filled') return theme.colors.background;
+  if (variant === 'outlined' || variant === 'ghost') return getColorValue(color, theme);
 
-  return '#3C4A59';
+  return theme.colors.textPrimary;
 };
 
-const getBackgroundColor = (variant: string, color: string): string => {
-  if (variant === 'filled') return getColorValue(color);
+const getBackgroundColor = (variant: 'default' | 'filled' | 'outlined' | 'ghost', color: 'primary' | 'secondary' | 'success' | 'error' | 'accent' | 'neutral', theme: any): string => {
+  if (variant === 'filled') return getColorValue(color, theme);
   if (variant === 'outlined') return 'transparent';
   if (variant === 'ghost') return 'transparent';
 
-  return '#F6F7FB';
+  return theme.colors.surface;
 };
 
-const getBorderRadius = (shape: string, size: number): number => {
+const getBorderRadius = (shape: 'circle' | 'rounded' | 'square', size: number): number => {
   if (shape === 'circle') return size / 2;
   if (shape === 'square') return 0;
   return 8; // rounded
@@ -140,9 +141,9 @@ const ButtonContainer = styled.TouchableOpacity<{
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   border-radius: ${({ shape, size }) => getBorderRadius(shape, size)}px;
-  background-color: ${({ variant, color }) => getBackgroundColor(variant, color)};
+  background-color: ${({ variant, color, theme }) => getBackgroundColor(variant as any, color as any, theme)};
   border-width: ${({ variant }) => (variant === 'outlined' ? '1px' : '0px')};
-  border-color: ${({ color }) => getColorValue(color)};
+  border-color: ${({ color, theme }) => getColorValue(color as any, theme)};
   align-items: center;
   justify-content: center;
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
@@ -156,17 +157,17 @@ const BadgeContainer = styled.View`
   right: -4px;
   min-width: 18px;
   min-height: 18px;
-  background-color: #ff6b6b;
+  background-color: ${({ theme }) => theme.colors.error};
   border-radius: 9px;
   align-items: center;
   justify-content: center;
   padding: 2px 4px;
   border-width: 2px;
-  border-color: #ffffff;
+  border-color: ${({ theme }) => theme.colors.background};
 `;
 
 const BadgeText = styled.Text`
   font-family: ${({ theme }) => theme.typography.fontFamily.bold};
   font-size: 10px;
-  color: #ffffff;
+  color: ${({ theme }) => theme.colors.background};
 `;
