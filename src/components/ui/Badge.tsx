@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { IoniconsName } from '@/types/icons';
 
 interface Props {
   children?: React.ReactNode;
@@ -9,7 +10,7 @@ interface Props {
   variant?: 'primary' | 'secondary' | 'success' | 'error' | 'accent';
   size?: 'small' | 'medium' | 'large';
   shape?: 'rounded' | 'square' | 'circle';
-  icon?: string;
+  icon?: IoniconsName;
   iconPosition?: 'left' | 'right';
   dot?: boolean;
   outline?: boolean;
@@ -47,7 +48,7 @@ export const Badge: React.FC<Props> = ({
       {icon && iconPosition === 'left' && (
         <IconWrapper>
           <Ionicons
-            name={icon as any}
+            name={icon}
             size={getIconSize(size)}
             color={outline ? getColorForVariant(variant) : '#ffffff'}
           />
@@ -63,7 +64,7 @@ export const Badge: React.FC<Props> = ({
       {icon && iconPosition === 'right' && (
         <IconWrapper>
           <Ionicons
-            name={icon as any}
+            name={icon}
             size={getIconSize(size)}
             color={outline ? getColorForVariant(variant) : '#ffffff'}
           />

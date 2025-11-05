@@ -7,11 +7,12 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
+import { IoniconsName } from '@/types/icons';
 
 export interface TabItem {
   key: string;
   label: string;
-  icon?: string;
+  icon?: IoniconsName;
   badge?: number;
   disabled?: boolean;
 }
@@ -66,7 +67,7 @@ export const Tabs: React.FC<TabsProps> = ({
           {tab.icon && (
             <TabIcon>
               <Ionicons
-                name={tab.icon as any}
+                name={tab.icon}
                 size={getIconSize(size)}
                 color={getTabColor(activeTab === tab.key, tab.disabled, variant)}
               />
