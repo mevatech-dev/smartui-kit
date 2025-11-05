@@ -31,6 +31,13 @@ import {
   IconButton,
   Chip,
   Alert,
+  Progress,
+  CircularProgress,
+  Stepper,
+  FloatingActionButton,
+  Menu,
+  EmptyState,
+  SwipeableItem,
 } from '@/components';
 import { useToast } from '@/components/ui/Toast';
 
@@ -48,6 +55,9 @@ export const ComponentShowcaseScreen = () => {
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [actionSheetVisible, setActionSheetVisible] = useState(false);
   const [segmentValue, setSegmentValue] = useState('all');
+  const [progressValue, setProgressValue] = useState(65);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [menuVisible, setMenuVisible] = useState(false);
   const { showToast } = useToast();
 
   const dropdownOptions = [
@@ -237,6 +247,36 @@ export const ComponentShowcaseScreen = () => {
               </ComponentCard>
 
               <ComponentCard>
+                <ComponentName>Progress</ComponentName>
+                <Progress
+                  value={progressValue}
+                  size="medium"
+                  color="primary"
+                  showLabel
+                />
+                <View style={{ height: 16 }} />
+                <BadgeRow style={{ justifyContent: 'center' }}>
+                  <CircularProgress
+                    value={progressValue}
+                    size="large"
+                    color="accent"
+                    showLabel
+                    thickness={6}
+                  />
+                </BadgeRow>
+              </ComponentCard>
+
+              <ComponentCard>
+                <ComponentName>EmptyState</ComponentName>
+                <EmptyState
+                  icon="folder-open"
+                  title="No Items"
+                  description="There are no items to display"
+                  variant="minimal"
+                />
+              </ComponentCard>
+
+              <ComponentCard>
                 <ComponentName>IconButton</ComponentName>
                 <BadgeRow>
                   <IconButton icon="heart" variant="filled" color="error" size="medium" onPress={() => showToast('Liked!', 'success')} />
@@ -319,9 +359,96 @@ export const ComponentShowcaseScreen = () => {
               </ComponentCard>
             </Section>
 
+            <Divider>Navigation Components</Divider>
+
+            <Section>
+              <ComponentCard>
+                <ComponentName>Stepper</ComponentName>
+                <Stepper
+                  steps={[
+                    { label: 'Account', description: 'Create account' },
+                    { label: 'Profile', description: 'Set up profile', icon: 'person' },
+                    { label: 'Verify', description: 'Verify email', icon: 'checkmark-circle' },
+                    { label: 'Done', description: 'All set!', icon: 'rocket' },
+                  ]}
+                  currentStep={currentStep}
+                  variant="horizontal"
+                  color="primary"
+                  showStepNumbers
+                />
+                <View style={{ height: 16 }} />
+                <BadgeRow>
+                  <ThemedButton
+                    title="Previous"
+                    variant="outlined"
+                    onPress={() => setCurrentStep(Math.max(0, currentStep - 1))}
+                    disabled={currentStep === 0}
+                  />
+                  <ThemedButton
+                    title="Next"
+                    variant="primary"
+                    onPress={() => setCurrentStep(Math.min(3, currentStep + 1))}
+                    disabled={currentStep === 3}
+                  />
+                </BadgeRow>
+              </ComponentCard>
+            </Section>
+
             <Divider>Interactive Components</Divider>
 
             <Section>
+              <ComponentCard>
+                <ComponentName>FloatingActionButton</ComponentName>
+                <ExampleText style={{ marginBottom: 12 }}>
+                  FAB appears in fixed position (bottom-right corner)
+                </ExampleText>
+              </ComponentCard>
+
+              <ComponentCard>
+                <ComponentName>Menu</ComponentName>
+                <Menu
+                  visible={menuVisible}
+                  onClose={() => setMenuVisible(false)}
+                  trigger={
+                    <ThemedButton
+                      title="Open Menu"
+                      variant="outlined"
+                      onPress={() => setMenuVisible(true)}
+                    />
+                  }
+                  items={[
+                    { label: 'Edit', icon: 'create', onPress: () => showToast('Edit clicked', 'info') },
+                    { label: 'Share', icon: 'share', onPress: () => showToast('Share clicked', 'info') },
+                    { label: 'Delete', icon: 'trash', destructive: true, divider: true, onPress: () => showToast('Delete clicked', 'error') },
+                  ]}
+                  placement="bottom-start"
+                />
+              </ComponentCard>
+
+              <ComponentCard>
+                <ComponentName>SwipeableItem</ComponentName>
+                <SwipeableItem
+                  leftActions={[
+                    {
+                      icon: 'archive',
+                      backgroundColor: '#4BB4FF',
+                      onPress: () => showToast('Archived', 'success'),
+                    },
+                  ]}
+                  rightActions={[
+                    {
+                      icon: 'trash',
+                      backgroundColor: '#E74C3C',
+                      onPress: () => showToast('Deleted', 'error'),
+                    },
+                  ]}
+                >
+                  <SwipeableContent>
+                    <ExampleText>Swipe left or right to reveal actions</ExampleText>
+                  </SwipeableContent>
+                </SwipeableItem>
+              </ComponentCard>
+
               <ComponentCard>
                 <ComponentName>Accordion</ComponentName>
                 <AccordionItem
@@ -389,7 +516,7 @@ export const ComponentShowcaseScreen = () => {
             <Section>
               <SectionTitle>About SmartUI Kit</SectionTitle>
               <InfoCard>
-                <InfoText>✨ 24 Custom UI Components</InfoText>
+                <InfoText>✨ 30 Custom UI Components</InfoText>
                 <InfoText>🎨 Full Theme Integration</InfoText>
                 <InfoText>⚡ React Native Reanimated</InfoText>
                 <InfoText>📘 TypeScript Support</InfoText>
@@ -441,6 +568,17 @@ export const ComponentShowcaseScreen = () => {
             onPress: () => showToast('Delete selected', 'error'),
           },
         ]}
+      />
+
+      <FloatingActionButton
+        icon="add"
+        actions={[
+          { icon: 'camera', label: 'Photo', onPress: () => showToast('Photo', 'info') },
+          { icon: 'image', label: 'Gallery', onPress: () => showToast('Gallery', 'info') },
+          { icon: 'document', label: 'File', onPress: () => showToast('File', 'info') },
+        ]}
+        position="bottom-right"
+        color="primary"
       />
     </Container>
   );
@@ -538,4 +676,12 @@ const InfoText = styled.Text`
   font-family: ${({ theme }) => theme.typography.fontFamily.regular};
   font-size: ${({ theme }) => theme.typography.fontSize.body}px;
   color: ${({ theme }) => theme.colors.textPrimary};
+`;
+
+const SwipeableContent = styled.View`
+  background-color: ${({ theme }) => theme.colors.background};
+  padding: ${({ theme }) => theme.spacing.md}px;
+  border-radius: ${({ theme }) => theme.radius.md}px;
+  border-width: 1px;
+  border-color: ${({ theme }) => theme.colors.border};
 `;
