@@ -198,7 +198,7 @@ const FABLabel = styled.Text`
   text-transform: uppercase;
 `;
 
-const ActionsContainer = styled.View<{ position: string }>`
+const ActionsContainer = styled.View<{ position: 'bottom-right' | 'bottom-left' | 'bottom-center' | 'top-right' | 'top-left' }>`
   position: absolute;
   gap: 12px;
   ${({ position }) => {
@@ -210,9 +210,9 @@ const ActionsContainer = styled.View<{ position: string }>`
     if (vertical === 'top') styles += 'top: 72px;';
 
     // Horizontal positioning
-    if (horizontal === 'right') styles += 'right: 0; align-items: flex-end;';
-    if (horizontal === 'left') styles += 'left: 0; align-items: flex-start;';
-    if (horizontal === 'center') styles += 'align-self: center; align-items: center;';
+    if (horizontal === 'right') styles += ' right: 0; align-items: flex-end;';
+    else if (horizontal === 'left') styles += ' left: 0; align-items: flex-start;';
+    else if (horizontal === 'center') styles += ' align-self: center; align-items: center;';
 
     return styles;
   }}
