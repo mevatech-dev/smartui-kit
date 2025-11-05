@@ -1023,8 +1023,7 @@ const [currentStep, setCurrentStep] = useState(1);
     { label: 'Complete', description: 'All done!', icon: 'rocket' },
   ]}
   currentStep={currentStep}
-  onStepPress={(index) => setCurrentStep(index)}
-  orientation="horizontal"
+  variant="horizontal"
   color="primary"
   showStepNumbers
 />
@@ -1032,34 +1031,29 @@ const [currentStep, setCurrentStep] = useState(1);
 // Vertical stepper
 <Stepper
   steps={[
-    { label: 'Order Placed', description: 'Your order has been received', status: 'completed' },
-    { label: 'Processing', description: 'We are preparing your order', status: 'active' },
-    { label: 'Shipped', description: 'Package is on the way', status: 'upcoming' },
-    { label: 'Delivered', description: 'Enjoy your purchase!', status: 'upcoming' },
+    { label: 'Order Placed', description: 'Your order has been received' },
+    { label: 'Processing', description: 'We are preparing your order' },
+    { label: 'Shipped', description: 'Package is on the way' },
+    { label: 'Delivered', description: 'Enjoy your purchase!' },
   ]}
   currentStep={1}
-  orientation="vertical"
+  variant="vertical"
   color="success"
-  variant="default"
 />
 ```
 
 **Props:**
 - `steps: Step[]` - Array of step configurations
 - `currentStep: number` - Active step index (0-based)
-- `onStepPress?: (index: number) => void` - Step click handler (for interactive stepper)
-- `orientation?: 'horizontal' | 'vertical'` - Layout direction (default: 'horizontal')
-- `variant?: 'default' | 'simple'` - Visual style (default: 'default')
-- `color?: 'primary' | 'secondary' | 'accent'` - Active step color (default: 'primary')
+- `variant?: 'horizontal' | 'vertical'` - Layout direction (default: 'horizontal')
+- `color?: 'primary' | 'secondary' | 'success' | 'accent'` - Active step color (default: 'primary')
 - `showStepNumbers?: boolean` - Show step numbers (default: true)
-- `allowStepClick?: boolean` - Enable step clicking (default: false)
 - `containerStyle?: ViewStyle` - Custom container styles
 
 **Step Interface:**
 - `label: string` - Step title
 - `description?: string` - Optional subtitle/description
 - `icon?: IoniconsName` - Optional icon (shown on active step if provided)
-- `status?: 'completed' | 'active' | 'upcoming'` - Override auto-calculated status
 
 **Status Logic:**
 - Steps before `currentStep`: status = 'completed'
@@ -1121,8 +1115,9 @@ import { FloatingActionButton } from '@/components';
 
 **FABAction Interface:**
 - `icon: IoniconsName` - Action icon
-- `label: string` - Action label
+- `label?: string` - Optional action label (shown next to action button)
 - `onPress: () => void` - Action press handler
+- `color?: 'primary' | 'secondary' | 'success' | 'error' | 'accent'` - Action button color (defaults to FAB color)
 
 **Features:**
 - Press animation with scale effect
@@ -1151,8 +1146,7 @@ const [menuVisible, setMenuVisible] = useState(false);
   items={[
     { label: 'Edit', icon: 'create', onPress: () => console.log('Edit') },
     { label: 'Share', icon: 'share', onPress: () => console.log('Share') },
-    { type: 'divider' },
-    { label: 'Delete', icon: 'trash', destructive: true, onPress: () => console.log('Delete') },
+    { label: 'Delete', icon: 'trash', destructive: true, divider: true, onPress: () => console.log('Delete') },
   ]}
   placement="bottom-end"
 />
@@ -1168,9 +1162,14 @@ const [menuVisible, setMenuVisible] = useState(false);
 
 **MenuItem Interface:**
 ```typescript
-type MenuItem =
-  | { label: string; icon?: IoniconsName; onPress: () => void; destructive?: boolean; disabled?: boolean }
-  | { type: 'divider' };
+interface MenuItem {
+  label: string;
+  icon?: IoniconsName;
+  onPress: () => void;
+  disabled?: boolean;
+  destructive?: boolean;
+  divider?: boolean;
+}
 ```
 
 **MenuItem Properties:**
@@ -1179,7 +1178,7 @@ type MenuItem =
 - `icon?: IoniconsName` - Optional icon
 - `destructive?: boolean` - Use destructive (red) styling
 - `disabled?: boolean` - Disable item
-- `type: 'divider'` - Renders a divider line (alternative to menu item)
+- `divider?: boolean` - Show divider line before this item
 
 ---
 
@@ -1200,20 +1199,20 @@ import { EmptyState } from '@/components';
   icon="cloud-offline"
   title="No Connection"
   description="Unable to load data. Please check your internet connection."
-  variant="standard"
+  variant="default"
   action={{
     label: 'Retry',
     onPress: () => console.log('Retry'),
   }}
 />
 
-// With illustration and primary action
+// With illustration and actions
 <EmptyState
   icon="search"
   title="No Results"
   description="We couldn't find anything matching your search."
   variant="illustration"
-  primaryAction={{
+  action={{
     label: 'Clear Search',
     onPress: () => console.log('Clear'),
   }}
@@ -1225,18 +1224,18 @@ import { EmptyState } from '@/components';
 ```
 
 **Props:**
-- `icon: IoniconsName` - Display icon
+- `icon?: IoniconsName` - Display icon
+- `image?: ImageSourcePropType` - Custom illustration image (alternative to icon)
 - `title: string` - Main heading
 - `description?: string` - Subtitle/explanation
-- `variant?: 'standard' | 'compact' | 'illustration'` - Visual style (default: 'standard')
-- `action?: { label: string; onPress: () => void }` - Single action button
-- `primaryAction?: { label: string; onPress: () => void }` - Primary action (filled button)
-- `secondaryAction?: { label: string; onPress: () => void }` - Secondary action (outlined button)
+- `variant?: 'default' | 'minimal' | 'illustration'` - Visual style (default: 'default')
+- `action?: { label: string; onPress: () => void; variant?: 'primary' | 'outlined' }` - Single action button
+- `secondaryAction?: { label: string; onPress: () => void; variant?: 'primary' | 'outlined' }` - Secondary action button
 - `containerStyle?: ViewStyle` - Custom container styles
 
 **Variants:**
-- `standard`: Regular size icon (80px), normal spacing
-- `compact`: Same as standard but more condensed
+- `default`: Regular size icon (80px), normal spacing
+- `minimal`: More condensed layout with smaller spacing
 - `illustration`: Large icon (120px), generous spacing for emphasis
 
 ---
@@ -1286,6 +1285,7 @@ import { SwipeableItem } from '@/components';
 
 **SwipeAction Interface:**
 - `icon: IoniconsName` - Action icon
+- `label?: string` - Optional action label (shown below icon)
 - `backgroundColor: string` - Action button background color
 - `onPress: () => void` - Action press handler
 

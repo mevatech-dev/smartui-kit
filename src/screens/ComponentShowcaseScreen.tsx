@@ -272,7 +272,7 @@ export const ComponentShowcaseScreen = () => {
                   icon="folder-open"
                   title="No Items"
                   description="There are no items to display"
-                  variant="compact"
+                  variant="minimal"
                 />
               </ComponentCard>
 
@@ -372,7 +372,7 @@ export const ComponentShowcaseScreen = () => {
                     { label: 'Done', description: 'All set!', icon: 'rocket' },
                   ]}
                   currentStep={currentStep}
-                  orientation="horizontal"
+                  variant="horizontal"
                   color="primary"
                   showStepNumbers
                 />
@@ -419,8 +419,7 @@ export const ComponentShowcaseScreen = () => {
                   items={[
                     { label: 'Edit', icon: 'create', onPress: () => showToast('Edit clicked', 'info') },
                     { label: 'Share', icon: 'share', onPress: () => showToast('Share clicked', 'info') },
-                    { type: 'divider' },
-                    { label: 'Delete', icon: 'trash', destructive: true, onPress: () => showToast('Delete clicked', 'error') },
+                    { label: 'Delete', icon: 'trash', destructive: true, divider: true, onPress: () => showToast('Delete clicked', 'error') },
                   ]}
                   placement="bottom-start"
                 />
