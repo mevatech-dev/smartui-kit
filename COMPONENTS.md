@@ -15,8 +15,15 @@ import {
   RadioGroupItem,
   Dropdown,
   MultiSelect,
+  Slider,
+  RangeSlider,
+  SearchBar,
+  Rating,
   Modal,
   Dialog,
+  BottomSheet,
+  ActionSheet,
+  Card,
   Badge,
   NotificationBadge,
   Avatar,
@@ -30,6 +37,7 @@ import {
   Tabs,
   TabPanel,
   TabPanels,
+  SegmentedControl,
   Accordion,
   AccordionItem,
   ControlledAccordionItem,
@@ -54,12 +62,18 @@ import {
 - **RadioButton** - Radio button with group support
 - **Dropdown** - Select dropdown with search functionality
 - **MultiSelect** - Multi-selection dropdown
+- **Slider** - Single and range slider with animated handles
+- **SearchBar** - Search input with clear, cancel, and loading states
+- **Rating** - Star rating component with half-star support
 
 ### Layout & Structure
 - **Modal** - Modal dialog with multiple animations and positions
 - **Dialog** - Simple confirmation dialog
 - **Divider** - Horizontal/vertical divider with optional text
 - **Accordion** - Expandable content sections
+- **BottomSheet** - Slide-up sheet with swipe to dismiss
+- **ActionSheet** - iOS-style action menu with options
+- **Card** - Feature-rich card with header, footer, and actions
 
 ### Display Components
 - **Badge** - Status badges and notification badges
@@ -69,6 +83,7 @@ import {
 
 ### Navigation Components
 - **Tabs** - Tab navigation with multiple variants
+- **SegmentedControl** - iOS-style segmented control for grouped selections
 
 ### Interactive Components
 - **IconButton** - Icon-only button with multiple variants and animations
@@ -594,6 +609,331 @@ import { Alert } from '@/components';
 - `closable?: boolean` - Enable close button
 - `onClose?: () => void` - Callback when alert is closed
 - `action?: { label: string; onPress: () => void }` - Action button
+- `containerStyle?: ViewStyle` - Custom container styles
+
+---
+
+### Card
+
+```typescript
+import { Card } from '@/components';
+
+<Card
+  title="Product Title"
+  subtitle="Product description"
+  headerIcon="pricetag"
+>
+  <Text>Card content goes here</Text>
+</Card>
+
+<Card
+  variant="outlined"
+  title="User Profile"
+  headerAvatar={<Avatar source={userImage} />}
+  actions={[
+    { label: 'View', onPress: () => console.log('View') },
+    { label: 'Edit', onPress: () => console.log('Edit') },
+  ]}
+>
+  <Text>User details here</Text>
+</Card>
+
+<Card
+  variant="elevated"
+  coverImage={require('./image.jpg')}
+  coverImageHeight={200}
+  title="Article Title"
+  onPress={() => console.log('Card pressed')}
+>
+  <Text>Article content preview...</Text>
+</Card>
+```
+
+**Props:**
+- `children?: React.ReactNode` - Card body content
+- `variant?: 'elevated' | 'outlined' | 'filled'` - Card style variant
+- `title?: string` - Header title
+- `subtitle?: string` - Header subtitle
+- `headerIcon?: IoniconsName` - Icon in header
+- `headerAvatar?: React.ReactNode` - Custom avatar component in header
+- `headerAction?: React.ReactNode` - Custom action element in header
+- `coverImage?: ImageSourcePropType` - Cover image source
+- `coverImageHeight?: number` - Cover image height (default: 200)
+- `actions?: CardAction[]` - Footer action buttons
+- `footer?: React.ReactNode` - Custom footer content
+- `onPress?: () => void` - Makes entire card pressable
+- `containerStyle?: ViewStyle` - Custom container styles
+- Extends `TouchableOpacityProps` - When onPress is provided
+
+---
+
+### Slider
+
+```typescript
+import { Slider, RangeSlider } from '@/components';
+
+// Single value slider
+<Slider
+  value={volume}
+  min={0}
+  max={100}
+  step={1}
+  onValueChange={setVolume}
+  onSlidingComplete={(value) => console.log('Final:', value)}
+  showValue
+  color="primary"
+/>
+
+// Range slider (dual handles)
+<RangeSlider
+  minValue={20}
+  maxValue={80}
+  min={0}
+  max={100}
+  step={5}
+  onValueChange={(min, max) => console.log(min, max)}
+  showValue
+  color="accent"
+/>
+```
+
+**Slider Props:**
+- `value?: number` - Current value (default: 0)
+- `min?: number` - Minimum value (default: 0)
+- `max?: number` - Maximum value (default: 100)
+- `step?: number` - Step increment (default: 1)
+- `onValueChange?: (value: number) => void` - Called during sliding
+- `onSlidingComplete?: (value: number) => void` - Called when released
+- `disabled?: boolean` - Disable interaction
+- `showValue?: boolean` - Show value label above slider
+- `color?: 'primary' | 'secondary' | 'success' | 'error' | 'accent'`
+- `containerStyle?: ViewStyle` - Custom container styles
+
+**RangeSlider Props:**
+- `minValue?: number` - Minimum handle value
+- `maxValue?: number` - Maximum handle value
+- `min?: number` - Minimum bound (default: 0)
+- `max?: number` - Maximum bound (default: 100)
+- `step?: number` - Step increment (default: 1)
+- `onValueChange?: (minValue: number, maxValue: number) => void`
+- `onSlidingComplete?: (minValue: number, maxValue: number) => void`
+- `disabled?: boolean`
+- `showValue?: boolean`
+- `color?: 'primary' | 'secondary' | 'success' | 'error' | 'accent'`
+- `containerStyle?: ViewStyle`
+
+---
+
+### BottomSheet
+
+```typescript
+import { BottomSheet } from '@/components';
+
+const [visible, setVisible] = useState(false);
+
+<BottomSheet
+  visible={visible}
+  onClose={() => setVisible(false)}
+  title="Select Options"
+  size="medium"
+  dismissible
+  showHandle
+>
+  <Text>Bottom sheet content here</Text>
+  <Button title="Action" onPress={handleAction} />
+</BottomSheet>
+```
+
+**Props:**
+- `visible: boolean` - Control visibility
+- `onClose: () => void` - Called when dismissed
+- `children: React.ReactNode` - Sheet content
+- `title?: string` - Optional title
+- `size?: 'small' | 'medium' | 'large' | 'full'` - Sheet height
+- `dismissible?: boolean` - Allow swipe/backdrop dismiss (default: true)
+- `showHandle?: boolean` - Show drag handle (default: true)
+
+---
+
+### ActionSheet
+
+```typescript
+import { ActionSheet } from '@/components';
+
+const [visible, setVisible] = useState(false);
+
+<ActionSheet
+  visible={visible}
+  onClose={() => setVisible(false)}
+  title="Choose an action"
+  message="Select one of the following options"
+  options={[
+    {
+      label: 'Edit',
+      icon: 'create',
+      onPress: () => console.log('Edit'),
+    },
+    {
+      label: 'Share',
+      icon: 'share',
+      onPress: () => console.log('Share'),
+    },
+    {
+      label: 'Delete',
+      icon: 'trash',
+      destructive: true,
+      onPress: () => console.log('Delete'),
+    },
+  ]}
+  showCancel
+  cancelLabel="Cancel"
+/>
+```
+
+**Props:**
+- `visible: boolean` - Control visibility
+- `onClose: () => void` - Called when dismissed
+- `title?: string` - Optional title
+- `message?: string` - Optional description
+- `options: ActionSheetOption[]` - Array of action options
+- `cancelLabel?: string` - Cancel button text (default: 'Cancel')
+- `showCancel?: boolean` - Show cancel button (default: true)
+
+**ActionSheetOption:**
+- `label: string` - Option text
+- `onPress: () => void` - Action handler
+- `icon?: IoniconsName` - Optional icon
+- `destructive?: boolean` - Use destructive (red) styling
+- `disabled?: boolean` - Disable option
+
+---
+
+### SearchBar
+
+```typescript
+import { SearchBar } from '@/components';
+
+const [search, setSearch] = useState('');
+
+<SearchBar
+  value={search}
+  onChangeText={setSearch}
+  onSearch={(text) => console.log('Search:', text)}
+  onClear={() => setSearch('')}
+  placeholder="Search products..."
+  showCancel
+  variant="rounded"
+/>
+
+<SearchBar
+  value={query}
+  onChangeText={setQuery}
+  loading={isSearching}
+  variant="default"
+/>
+```
+
+**Props:**
+- `value: string` - Search text value
+- `onChangeText: (text: string) => void` - Text change handler
+- `onSearch?: (text: string) => void` - Called on submit/enter
+- `onClear?: () => void` - Called when cleared
+- `onFocus?: () => void` - Focus handler
+- `onBlur?: () => void` - Blur handler
+- `placeholder?: string` - Placeholder text (default: 'Search...')
+- `showCancel?: boolean` - Show animated cancel button (default: false)
+- `cancelText?: string` - Cancel button text (default: 'Cancel')
+- `loading?: boolean` - Show loading indicator
+- `variant?: 'default' | 'rounded'` - Border radius style
+- `containerStyle?: ViewStyle` - Custom container styles
+- Extends `TextInputProps` - All TextInput props supported
+
+---
+
+### SegmentedControl
+
+```typescript
+import { SegmentedControl } from '@/components';
+
+const [selected, setSelected] = useState('tab1');
+
+<SegmentedControl
+  options={[
+    { label: 'Day', value: 'day', icon: 'sunny' },
+    { label: 'Week', value: 'week', icon: 'calendar' },
+    { label: 'Month', value: 'month', icon: 'calendar-outline' },
+  ]}
+  value={selected}
+  onChange={setSelected}
+  variant="default"
+  color="primary"
+/>
+
+<SegmentedControl
+  options={[
+    { label: 'All', value: 'all' },
+    { label: 'Active', value: 'active' },
+    { label: 'Completed', value: 'completed' },
+  ]}
+  value={filter}
+  onChange={setFilter}
+  variant="pills"
+  color="accent"
+/>
+```
+
+**Props:**
+- `options: SegmentOption[]` - Array of segment options
+- `value: string` - Currently selected value
+- `onChange: (value: string) => void` - Selection change handler
+- `variant?: 'default' | 'pills'` - Visual style
+- `color?: 'primary' | 'secondary' | 'accent'` - Active segment color
+- `disabled?: boolean` - Disable all segments
+- `containerStyle?: ViewStyle` - Custom container styles
+
+**SegmentOption:**
+- `label: string` - Segment label text
+- `value: string` - Unique value identifier
+- `icon?: IoniconsName` - Optional icon
+- `disabled?: boolean` - Disable specific segment
+
+---
+
+### Rating
+
+```typescript
+import { Rating } from '@/components';
+
+const [rating, setRating] = useState(3.5);
+
+<Rating
+  value={rating}
+  onChange={setRating}
+  max={5}
+  allowHalf
+  size="medium"
+  color="warning"
+  showValue
+/>
+
+<Rating
+  value={4.5}
+  readOnly
+  max={5}
+  allowHalf
+  size="small"
+/>
+```
+
+**Props:**
+- `value: number` - Current rating value
+- `onChange?: (value: number) => void` - Rating change handler
+- `max?: number` - Maximum rating value (default: 5)
+- `allowHalf?: boolean` - Enable half-star ratings (default: false)
+- `readOnly?: boolean` - Disable interaction (default: false)
+- `size?: 'small' | 'medium' | 'large'` - Star size
+- `color?: 'primary' | 'secondary' | 'accent' | 'warning'` - Star color
+- `showValue?: boolean` - Show numeric value (default: false)
 - `containerStyle?: ViewStyle` - Custom container styles
 
 ---

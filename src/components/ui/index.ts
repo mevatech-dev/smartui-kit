@@ -10,11 +10,17 @@ export * from './Switch';
 export * from './Checkbox';
 export * from './RadioButton';
 export * from './Dropdown';
+export * from './Slider';
+export * from './SearchBar';
+export * from './Rating';
 
 // Layout & Structure
 export * from './Modal';
 export * from './Divider';
 export * from './Accordion';
+export * from './BottomSheet';
+export * from './ActionSheet';
+export * from './Card';
 
 // Display Components
 export * from './Badge';
@@ -24,6 +30,7 @@ export * from './Chip';
 
 // Navigation Components
 export * from './Tabs';
+export * from './SegmentedControl';
 
 // Interactive Components
 export * from './IconButton';
