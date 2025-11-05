@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import { TextInputProps, ViewStyle } from 'react-native';
+import { TextInputProps, ViewStyle, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, {
   useSharedValue,
@@ -64,10 +64,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   const handleCancel = () => {
-    onChangeText('');
+    handleClear();
     setIsFocused(false);
     cancelWidth.value = withTiming(0, { duration: 200 });
-    onClear?.();
   };
 
   const handleSubmit = () => {
@@ -100,7 +99,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
         {loading && (
           <ActionContainer>
-            <Ionicons name="refresh" size={20} color={theme.colors.textSecondary} />
+            <ActivityIndicator color={theme.colors.textSecondary} />
           </ActionContainer>
         )}
 

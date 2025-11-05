@@ -1,12 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled, { useTheme } from 'styled-components/native';
 import { ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-} from 'react-native-reanimated';
 
 interface RatingProps {
   value: number;
@@ -32,7 +27,6 @@ export const Rating: React.FC<RatingProps> = ({
   containerStyle,
 }) => {
   const theme = useTheme();
-  const [hoveredStar, setHoveredStar] = useState<number | null>(null);
 
   const handleStarPress = (index: number, isHalf: boolean = false) => {
     if (readOnly || !onChange) return;
@@ -42,10 +36,8 @@ export const Rating: React.FC<RatingProps> = ({
   };
 
   const getStarType = (index: number): 'full' | 'half' | 'empty' => {
-    const displayValue = hoveredStar !== null ? hoveredStar : value;
-
-    if (displayValue >= index + 1) return 'full';
-    if (allowHalf && displayValue >= index + 0.5) return 'half';
+    if (value >= index + 1) return 'full';
+    if (allowHalf && value >= index + 0.5) return 'half';
     return 'empty';
   };
 
@@ -62,13 +54,11 @@ export const Rating: React.FC<RatingProps> = ({
               disabled={readOnly}
               activeOpacity={0.7}
             >
-              <AnimatedStar index={index} size={starSize}>
-                <Ionicons
-                  name={getIconName(getStarType(index))}
-                  size={starSize}
-                  color={getStarType(index) !== 'empty' ? starColor : theme.colors.border}
-                />
-              </AnimatedStar>
+              <Ionicons
+                name={getIconName(getStarType(index))}
+                size={starSize}
+                color={getStarType(index) !== 'empty' ? starColor : theme.colors.border}
+              />
             </StarTouchable>
 
             {allowHalf && !readOnly && (
@@ -108,7 +98,7 @@ const getColorValue = (color: 'primary' | 'secondary' | 'accent' | 'warning', th
     primary: theme.colors.primary,
     secondary: theme.colors.secondary,
     accent: theme.colors.accent,
-    warning: theme.colors.accent, // Using accent for warning/star color
+    warning: theme.colors.warning || theme.colors.accent, // Use warning color if available, fallback to accent
   };
   return colors[color];
 };
@@ -130,11 +120,6 @@ const Star = styled.View<{ readOnly: boolean }>`
 `;
 
 const StarTouchable = styled.TouchableOpacity``;
-
-const AnimatedStar = styled(Animated.View)<{ index: number; size: number }>`
-  width: ${({ size }) => size}px;
-  height: ${({ size }) => size}px;
-`;
 
 const HalfStarOverlay = styled.TouchableOpacity`
   position: absolute;

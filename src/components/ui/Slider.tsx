@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled, { useTheme } from 'styled-components/native';
 import { PanResponder, ViewStyle } from 'react-native';
 import Animated, {
@@ -51,6 +51,11 @@ export const Slider: React.FC<SliderProps> = ({
   const [sliderWidth, setSliderWidth] = useState(0);
   const scale = useSharedValue(1);
 
+  // Sync internal state with value prop
+  useEffect(() => {
+    setSliderValue(value);
+  }, [value]);
+
   const normalizeValue = (val: number): number => {
     const rounded = Math.round(val / step) * step;
     return Math.max(min, Math.min(max, rounded));
@@ -70,11 +75,15 @@ export const Slider: React.FC<SliderProps> = ({
     PanResponder.create({
       onStartShouldSetPanResponder: () => !disabled,
       onMoveShouldSetPanResponder: () => !disabled,
-      onPanResponderGrant: () => {
+      onPanResponderGrant: (evt) => {
+        const position = Math.max(0, Math.min(sliderWidth, evt.nativeEvent.locationX));
+        const newValue = positionToValue(position);
+        setSliderValue(newValue);
+        onValueChange?.(newValue);
         scale.value = withSpring(1.3);
       },
-      onPanResponderMove: (_, gestureState) => {
-        const position = Math.max(0, Math.min(sliderWidth, gestureState.moveX - gestureState.x0 + valueToPosition(sliderValue)));
+      onPanResponderMove: (evt) => {
+        const position = Math.max(0, Math.min(sliderWidth, evt.nativeEvent.locationX));
         const newValue = positionToValue(position);
         setSliderValue(newValue);
         onValueChange?.(newValue);
@@ -134,6 +143,15 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
   const minScale = useSharedValue(1);
   const maxScale = useSharedValue(1);
 
+  // Sync internal state with value props
+  useEffect(() => {
+    setSliderMinValue(minValue);
+  }, [minValue]);
+
+  useEffect(() => {
+    setSliderMaxValue(maxValue);
+  }, [maxValue]);
+
   const normalizeValue = (val: number): number => {
     const rounded = Math.round(val / step) * step;
     return Math.max(min, Math.min(max, rounded));
@@ -153,8 +171,8 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
     PanResponder.create({
       onStartShouldSetPanResponder: () => !disabled,
       onMoveShouldSetPanResponder: () => !disabled,
-      onPanResponderGrant: (_, gestureState) => {
-        const touchPosition = gestureState.x0;
+      onPanResponderGrant: (evt) => {
+        const touchPosition = evt.nativeEvent.locationX;
         const minPosition = valueToPosition(sliderMinValue);
         const maxPosition = valueToPosition(sliderMaxValue);
 
@@ -169,8 +187,8 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
           maxScale.value = withSpring(1.3);
         }
       },
-      onPanResponderMove: (_, gestureState) => {
-        const position = Math.max(0, Math.min(sliderWidth, gestureState.moveX));
+      onPanResponderMove: (evt) => {
+        const position = Math.max(0, Math.min(sliderWidth, evt.nativeEvent.locationX));
         const newValue = positionToValue(position);
 
         if (activeThumb === 'min') {

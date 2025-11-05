@@ -262,8 +262,6 @@ export const ComponentShowcaseScreen = () => {
               </ComponentCard>
             </Section>
 
-            <Divider>Display Components</Divider>
-
             <Section>
               <ComponentCard>
                 <ComponentName>Badge</ComponentName>

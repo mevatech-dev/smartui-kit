@@ -932,7 +932,7 @@ const [rating, setRating] = useState(3.5);
 - `allowHalf?: boolean` - Enable half-star ratings (default: false)
 - `readOnly?: boolean` - Disable interaction (default: false)
 - `size?: 'small' | 'medium' | 'large'` - Star size
-- `color?: 'primary' | 'secondary' | 'accent' | 'warning'` - Star color
+- `color?: 'primary' | 'secondary' | 'accent' | 'warning'` - Star color (warning falls back to accent if theme.colors.warning not available)
 - `showValue?: boolean` - Show numeric value (default: false)
 - `containerStyle?: ViewStyle` - Custom container styles
 

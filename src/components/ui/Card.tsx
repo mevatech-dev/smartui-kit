@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { useTheme } from 'styled-components/native';
+import styled, { useTheme, css } from 'styled-components/native';
 import { TouchableOpacityProps, ViewStyle, ImageSourcePropType } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { IoniconsName } from '@/types/icons';
@@ -149,7 +149,7 @@ const getBorder = (variant: 'elevated' | 'outlined' | 'filled', theme: any): str
   return '';
 };
 
-const CardView = styled.View<{ variant: 'elevated' | 'outlined' | 'filled' }>`
+const cardBaseStyles = css<{ variant: 'elevated' | 'outlined' | 'filled' }>`
   border-radius: ${({ theme }) => theme.radius.lg}px;
   background-color: ${({ variant, theme }) => getBackgroundColor(variant, theme)};
   overflow: hidden;
@@ -157,12 +157,12 @@ const CardView = styled.View<{ variant: 'elevated' | 'outlined' | 'filled' }>`
   ${({ variant, theme }) => getBorder(variant, theme)}
 `;
 
+const CardView = styled.View<{ variant: 'elevated' | 'outlined' | 'filled' }>`
+  ${cardBaseStyles}
+`;
+
 const CardTouchable = styled.TouchableOpacity<{ variant: 'elevated' | 'outlined' | 'filled' }>`
-  border-radius: ${({ theme }) => theme.radius.lg}px;
-  background-color: ${({ variant, theme }) => getBackgroundColor(variant, theme)};
-  overflow: hidden;
-  ${({ variant }) => getElevation(variant)}
-  ${({ variant, theme }) => getBorder(variant, theme)}
+  ${cardBaseStyles}
 `;
 
 const CoverImage = styled.Image<{ height: number }>`

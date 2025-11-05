@@ -17,7 +17,6 @@ interface BottomSheetProps {
   size?: 'small' | 'medium' | 'large' | 'full';
   dismissible?: boolean;
   showHandle?: boolean;
-  snapPoints?: number[]; // Array of percentages [25, 50, 75, 100]
 }
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -30,7 +29,6 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
   size = 'medium',
   dismissible = true,
   showHandle = true,
-  snapPoints,
 }) => {
   const theme = useTheme();
   const translateY = useSharedValue(SCREEN_HEIGHT);
