@@ -20,10 +20,15 @@ export * from './Accordion';
 export * from './Badge';
 export * from './Avatar';
 export * from './Skeleton';
+export * from './Chip';
 
 // Navigation Components
 export * from './Tabs';
 
+// Interactive Components
+export * from './IconButton';
+
 // Feedback Components
 export * from './Toast';
 export * from './Tooltip';
+export * from './Alert';

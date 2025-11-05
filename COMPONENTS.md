@@ -39,6 +39,9 @@ import {
   SkeletonList,
   SkeletonGrid,
   SkeletonProfile,
+  Chip,
+  IconButton,
+  Alert,
 } from '@/components';
 ```
 
@@ -62,13 +65,18 @@ import {
 - **Badge** - Status badges and notification badges
 - **Avatar** - User avatar with status indicator and groups
 - **Skeleton** - Loading placeholders with multiple variants
+- **Chip** - Compact elements for tags, filters, and selections
 
 ### Navigation Components
 - **Tabs** - Tab navigation with multiple variants
 
+### Interactive Components
+- **IconButton** - Icon-only button with multiple variants and animations
+
 ### Feedback Components
 - **Toast** - Toast notifications with provider
 - **Tooltip** - Hoverable tooltips
+- **Alert** - Informational banners with actions and dismiss
 
 ---
 
@@ -454,6 +462,139 @@ import {
 {/* Profile Skeleton */}
 <SkeletonProfile />
 ```
+
+---
+
+### Chip
+
+```typescript
+import { Chip } from '@/components';
+
+<Chip label="New Feature" color="primary" size="medium" />
+
+<Chip
+  label="JavaScript"
+  color="accent"
+  variant="outlined"
+  icon="logo-javascript"
+/>
+
+<Chip
+  label="Removable Tag"
+  color="success"
+  onDelete={() => console.log('Deleted')}
+/>
+
+<Chip
+  label="Clickable"
+  color="primary"
+  onPress={() => console.log('Clicked')}
+/>
+```
+
+**Props:**
+- `label: string` - Chip text
+- `variant?: 'filled' | 'outlined'`
+- `color?: 'primary' | 'secondary' | 'success' | 'error' | 'accent'`
+- `size?: 'small' | 'medium'`
+- `icon?: IoniconsName` - Icon to display (not shown if avatar is provided)
+- `avatar?: React.ReactNode` - Custom avatar component
+- `onPress?: () => void` - Click handler for the entire chip
+- `onDelete?: () => void` - Delete handler (shows close icon)
+- `disabled?: boolean` - Disable all interactions
+- `containerStyle?: ViewStyle` - Custom container styles
+
+---
+
+### IconButton
+
+```typescript
+import { IconButton } from '@/components';
+
+<IconButton
+  icon="heart"
+  variant="filled"
+  color="error"
+  size="medium"
+/>
+
+<IconButton
+  icon="notifications"
+  variant="outlined"
+  color="primary"
+  badge={5}
+/>
+
+<IconButton
+  icon="settings"
+  variant="ghost"
+  color="neutral"
+  shape="rounded"
+  onPress={() => console.log('Settings')}
+/>
+```
+
+**Props:**
+- `icon: IoniconsName` - Icon name
+- `size?: 'small' | 'medium' | 'large'`
+- `variant?: 'default' | 'filled' | 'outlined' | 'ghost'`
+- `color?: 'primary' | 'secondary' | 'success' | 'error' | 'accent' | 'neutral'`
+- `shape?: 'circle' | 'rounded' | 'square'`
+- `badge?: number` - Badge count (shows "99+" if > 99)
+- `animated?: boolean` - Enable press animation (default: true)
+- `disabled?: boolean` - Disable button interactions
+- Extends `TouchableOpacityProps` - Accepts all TouchableOpacity props (onPress, style, etc.)
+
+---
+
+### Alert
+
+```typescript
+import { Alert } from '@/components';
+
+<Alert
+  type="success"
+  message="Your changes have been saved successfully!"
+/>
+
+<Alert
+  type="error"
+  title="Error Occurred"
+  message="Unable to complete the operation. Please try again."
+  variant="filled"
+  closable
+  onClose={() => console.log('Alert closed')}
+/>
+
+<Alert
+  type="warning"
+  message="Your session will expire in 5 minutes"
+  variant="outlined"
+  action={{
+    label: 'Extend',
+    onPress: () => console.log('Session extended'),
+  }}
+/>
+
+<Alert
+  type="info"
+  message="New features are available!"
+  icon="sparkles"
+  variant="standard"
+/>
+```
+
+**Props:**
+- `message: string` - Alert message
+- `title?: string` - Optional title
+- `type?: 'info' | 'success' | 'warning' | 'error'`
+- `variant?: 'standard' | 'filled' | 'outlined'`
+- `icon?: IoniconsName` - Custom icon (overrides default icon)
+- `showIcon?: boolean` - Show/hide icon (default: true)
+- `closable?: boolean` - Enable close button
+- `onClose?: () => void` - Callback when alert is closed
+- `action?: { label: string; onPress: () => void }` - Action button
+- `containerStyle?: ViewStyle` - Custom container styles
 
 ---
 
