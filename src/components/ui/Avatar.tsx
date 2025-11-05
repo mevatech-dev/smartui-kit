@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import { ViewStyle, ImageSourcePropType } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -129,6 +129,7 @@ export const AvatarGroup: React.FC<AvatarGroupProps> = ({
   onPressMore,
   containerStyle,
 }) => {
+  const theme = useTheme();
   const displayAvatars = avatars.slice(0, max);
   const remainingCount = avatars.length - max;
   const avatarSize = typeof size === 'number' ? size : getSizeValue(size);
@@ -146,7 +147,7 @@ export const AvatarGroup: React.FC<AvatarGroupProps> = ({
             size={size}
             containerStyle={{
               borderWidth: 2,
-              borderColor: '#ffffff',
+              borderColor: theme.colors.background,
             }}
           />
         </AvatarWrapper>
@@ -164,7 +165,7 @@ export const AvatarGroup: React.FC<AvatarGroupProps> = ({
             onPress={onPressMore}
             containerStyle={{
               borderWidth: 2,
-              borderColor: '#ffffff',
+              borderColor: theme.colors.background,
             }}
           />
         </AvatarWrapper>

@@ -46,9 +46,10 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({
   maxToasts = 3,
 }) => {
   const [toasts, setToasts] = useState<ToastConfig[]>([]);
+  const toastIdCounter = React.useRef(0);
 
   const showToast = useCallback((config: Omit<ToastConfig, 'id'>) => {
-    const id = Date.now().toString();
+    const id = `toast-${toastIdCounter.current++}`;
     const newToast: ToastConfig = {
       id,
       duration: 3000,

@@ -130,9 +130,9 @@ const getColorForVariant = (variant: string) => {
 
 const getPaddingForSize = (size: string) => {
   const paddings = {
-    small: '4px 8px',
-    medium: '6px 12px',
-    large: '8px 16px',
+    small: { vertical: 4, horizontal: 8 },
+    medium: { vertical: 6, horizontal: 12 },
+    large: { vertical: 8, horizontal: 16 },
   };
   return paddings[size] || paddings.medium;
 };
@@ -179,7 +179,8 @@ const BadgeContainer = styled.View<{
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: ${({ size }) => getPaddingForSize(size)};
+  padding-vertical: ${({ size }) => getPaddingForSize(size).vertical}px;
+  padding-horizontal: ${({ size }) => getPaddingForSize(size).horizontal}px;
   border-radius: ${({ shape }) => getBadgeRadius(shape)}px;
   background-color: ${({ variant, outline }) =>
     outline ? 'transparent' : getColorForVariant(variant)};

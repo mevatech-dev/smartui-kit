@@ -256,11 +256,11 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
                   isSelected={values.includes(item.value)}
                 >
                   <CheckboxWrapper>
-                    <Checkbox isChecked={values.includes(item.value)}>
+                    <CheckboxIndicator isChecked={values.includes(item.value)}>
                       {values.includes(item.value) && (
                         <Ionicons name="checkmark" size={16} color="#ffffff" />
                       )}
-                    </Checkbox>
+                    </CheckboxIndicator>
                   </CheckboxWrapper>
                   <OptionText
                     isSelected={values.includes(item.value)}
@@ -389,7 +389,7 @@ const EmptyText = styled.Text`
 
 const CheckboxWrapper = styled.View``;
 
-const Checkbox = styled.View<{ isChecked: boolean }>`
+const CheckboxIndicator = styled.View<{ isChecked: boolean }>`
   width: 20px;
   height: 20px;
   border-radius: ${({ theme }) => theme.radius.sm}px;

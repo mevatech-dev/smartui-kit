@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import { ViewStyle, LayoutAnimation, Platform, UIManager } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -37,6 +37,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const rotation = useSharedValue(defaultExpanded ? 1 : 0);
   const contentHeight = useSharedValue(defaultExpanded ? 1 : 0);
+  const theme = useTheme();
 
   const handleToggle = () => {
     if (disabled) return;
@@ -77,7 +78,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
       >
         {icon && (
           <IconWrapper>
-            <Ionicons name={icon as any} size={20} color="#3C4A59" />
+            <Ionicons name={icon as any} size={20} color={theme.colors.textPrimary} />
           </IconWrapper>
         )}
 
@@ -87,7 +88,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
           <Ionicons
             name="chevron-down"
             size={20}
-            color={disabled ? '#94A3B8' : '#3C4A59'}
+            color={disabled ? theme.colors.textSecondary : theme.colors.textPrimary}
           />
         </AnimatedChevron>
       </Header>
@@ -161,6 +162,7 @@ export const ControlledAccordionItem: React.FC<ControlledAccordionItemProps> = (
 }) => {
   const rotation = useSharedValue(expanded ? 1 : 0);
   const contentHeight = useSharedValue(expanded ? 1 : 0);
+  const theme = useTheme();
 
   React.useEffect(() => {
     rotation.value = withSpring(expanded ? 1 : 0, {
@@ -198,7 +200,7 @@ export const ControlledAccordionItem: React.FC<ControlledAccordionItemProps> = (
       >
         {icon && (
           <IconWrapper>
-            <Ionicons name={icon as any} size={20} color="#3C4A59" />
+            <Ionicons name={icon as any} size={20} color={theme.colors.textPrimary} />
           </IconWrapper>
         )}
 
@@ -208,7 +210,7 @@ export const ControlledAccordionItem: React.FC<ControlledAccordionItemProps> = (
           <Ionicons
             name="chevron-down"
             size={20}
-            color={disabled ? '#94A3B8' : '#3C4A59'}
+            color={disabled ? theme.colors.textSecondary : theme.colors.textPrimary}
           />
         </AnimatedChevron>
       </Header>

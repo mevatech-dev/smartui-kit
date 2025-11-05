@@ -33,15 +33,14 @@ export const Tooltip: React.FC<Props> = ({
   const [childLayout, setChildLayout] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const scale = useSharedValue(0);
   const opacity = useSharedValue(0);
-
-  let timeoutId: NodeJS.Timeout;
+  const timeoutId = React.useRef<NodeJS.Timeout>();
 
   const handlePressIn = (event: any) => {
     event.target.measure((x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
       setChildLayout({ x: pageX, y: pageY, width, height });
     });
 
-    timeoutId = setTimeout(() => {
+    timeoutId.current = setTimeout(() => {
       setIsVisible(true);
       scale.value = withSpring(1, { damping: 12, stiffness: 150 });
       opacity.value = withTiming(1, { duration: 150 });
@@ -49,7 +48,7 @@ export const Tooltip: React.FC<Props> = ({
   };
 
   const handlePressOut = () => {
-    if (timeoutId) clearTimeout(timeoutId);
+    if (timeoutId.current) clearTimeout(timeoutId.current);
 
     scale.value = withTiming(0, { duration: 150 });
     opacity.value = withTiming(0, { duration: 150 }, () => {

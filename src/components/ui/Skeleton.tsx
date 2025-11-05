@@ -272,11 +272,12 @@ const SkeletonGridContainer = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
+  margin: -6px;
 `;
 
 const SkeletonGridItem = styled.View<{ columns: number; spacing: number }>`
-  width: ${({ columns, spacing }) => `${100 / columns - spacing / columns}%`};
-  margin: ${({ spacing }) => spacing / 2}px;
+  width: ${({ columns }) => `${100 / columns}%`};
+  padding: ${({ spacing }) => spacing / 2}px;
 `;
 
 const SkeletonProfileContainer = styled.View`

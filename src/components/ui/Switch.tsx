@@ -134,7 +134,7 @@ const AnimatedThumb = styled(Animated.View)<{
   width: ${({ size }) => getThumbSize(size)}px;
   height: ${({ size }) => getThumbSize(size)}px;
   border-radius: ${({ theme }) => theme.radius.full}px;
-  background-color: #ffffff;
+  background-color: ${({ theme }) => theme.colors.background};
   shadow-color: #000;
   shadow-offset: 0px 2px;
   shadow-opacity: 0.2;
