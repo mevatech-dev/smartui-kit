@@ -17,6 +17,7 @@ import {
   Tabs,
   TabPanel,
   TabPanels,
+  Accordion,
   AccordionItem,
   Skeleton,
   SkeletonText,
@@ -489,22 +490,30 @@ export const ComponentShowcaseScreen = () => {
 
               <ComponentCard>
                 <ComponentName>Accordion</ComponentName>
-                <AccordionItem
-                  title="What is SmartUI Kit?"
-                  icon="information-circle"
-                  defaultExpanded
-                >
-                  <AccordionText>
-                    SmartUI Kit is a comprehensive React Native component library with
-                    full theme support, animations, and TypeScript integration.
-                  </AccordionText>
-                </AccordionItem>
-                <AccordionItem title="How to use components?" icon="help-circle">
-                  <AccordionText>
-                    Import any component from @/components and use it with TypeScript
-                    autocomplete and full theme integration.
-                  </AccordionText>
-                </AccordionItem>
+                <Accordion allowMultiple>
+                  <AccordionItem
+                    title="What is SmartUI Kit?"
+                    icon="information-circle"
+                    defaultExpanded
+                  >
+                    <AccordionText>
+                      SmartUI Kit is a comprehensive React Native component library with
+                      full theme support, animations, and TypeScript integration.
+                    </AccordionText>
+                  </AccordionItem>
+                  <AccordionItem title="How to use components?" icon="help-circle">
+                    <AccordionText>
+                      Import any component from @/components and use it with TypeScript
+                      autocomplete and full theme integration.
+                    </AccordionText>
+                  </AccordionItem>
+                  <AccordionItem title="Features" icon="star" defaultExpanded>
+                    <AccordionText>
+                      Full theme support, smooth animations, TypeScript integration,
+                      and 40+ production-ready components.
+                    </AccordionText>
+                  </AccordionItem>
+                </Accordion>
               </ComponentCard>
 
               <ComponentCard>
