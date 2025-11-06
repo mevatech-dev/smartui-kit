@@ -529,11 +529,18 @@ export const ComponentShowcaseScreen = () => {
                   <Tooltip content="This is a helpful tooltip" placement="top">
                     <ThemedButton title="Hover for Tooltip" variant="outlined" />
                   </Tooltip>
-                  <ThemedButton
-                    title="Controlled Tooltip"
-                    variant="outlined"
-                    onPress={() => setTooltipVisible(true)}
-                  />
+                  <ControlledTooltip
+                    content="Controlled tooltip example"
+                    placement="bottom"
+                    visible={tooltipVisible}
+                    onClose={() => setTooltipVisible(false)}
+                  >
+                    <ThemedButton
+                      title="Controlled Tooltip"
+                      variant="outlined"
+                      onPress={() => setTooltipVisible(true)}
+                    />
+                  </ControlledTooltip>
                 </BadgeRow>
               </ComponentCard>
 
@@ -630,15 +637,6 @@ export const ComponentShowcaseScreen = () => {
           },
         ]}
       />
-
-      <ControlledTooltip
-        content="Controlled tooltip example"
-        placement="bottom"
-        visible={tooltipVisible}
-        onClose={() => setTooltipVisible(false)}
-      >
-        <View />
-      </ControlledTooltip>
 
       <Dialog
         visible={dialogVisible}
