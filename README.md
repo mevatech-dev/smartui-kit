@@ -71,6 +71,24 @@ npm run android
 npm run web
 ```
 
+### Available Scripts
+
+```bash
+# Linting
+npm run lint              # Check for linting errors
+npm run lint:fix          # Auto-fix linting errors
+
+# Type Checking
+npm run type-check        # Run TypeScript compiler checks
+
+# Code Formatting
+npm run format            # Format code with Prettier
+npm run format:check      # Check if code is formatted
+
+# Cleanup
+npm run clean             # Remove node_modules, .expo, and dist
+```
+
 ## 📚 Documentation
 
 See [COMPONENTS.md](./COMPONENTS.md) for complete component documentation with:
@@ -149,11 +167,19 @@ Navigate to **Component Showcase** to see all components in action.
 
 ## 🤝 Contributing
 
-This is a feature-complete component library. For bug reports or feature requests, please open an issue.
+Contributions are welcome! Please read our [Contributing Guidelines](./CONTRIBUTING.md) for details on:
+
+- Development setup
+- Coding standards
+- Component structure
+- Pull request process
+- Commit conventions
+
+For bug reports or feature requests, please open an issue on GitHub.
 
 ## 📄 License
 
-This project is part of the SmartUI Kit component library.
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
 
 ---
 

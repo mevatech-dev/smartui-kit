@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+.pnp.js
+
+# Expo
+.expo/
+.expo-shared/
+dist/
+web-build/
+
+# Build outputs
+*.tsbuildinfo
+coverage/
+
+# Config files
+package-lock.json
+yarn.lock
+bun.lock
+
+# Misc
+*.log
+.DS_Store
