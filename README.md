@@ -26,7 +26,7 @@ TextInput, Switch, Checkbox, RadioButton, Dropdown, MultiSelect, Slider, SearchB
 ### 📐 Layout & Structure (9)
 Modal, Dialog, Divider, Accordion, BottomSheet, ActionSheet, Card, Menu, EmptyState
 
-### 🖼️ Display Components (5)
+### 🖼️ Display Components (7)
 Badge, NotificationBadge, Avatar, AvatarGroup, Skeleton, Chip, Progress
 
 ### 🧭 Navigation Components (3)
