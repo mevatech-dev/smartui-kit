@@ -40,7 +40,16 @@ Toast, Tooltip, Alert
 
 **Total:** 40+ components with multiple variants
 
-## 🚀 Quick Start
+## 📲 Using in Your App
+
+Want to use SmartUI Kit in your own React Native project?
+
+👉 **[Complete Integration Guide](./INSTALLATION.md)** - Step-by-step setup instructions
+👉 **[Real-World Examples](./EXAMPLES.md)** - Children's app examples, quiz screens, reward systems
+
+Perfect for building engaging children's apps, educational platforms, and interactive learning experiences!
+
+## 🚀 Quick Start (Development)
 
 ### Installation
 
