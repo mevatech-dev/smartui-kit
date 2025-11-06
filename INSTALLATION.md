@@ -192,7 +192,7 @@ const Container = styled.View`
 ### Example 2: Interactive Card with Progress
 
 ```typescript
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, Progress, Badge, IconButton } from '@/components';
 import styled from 'styled-components/native';
 
@@ -387,7 +387,9 @@ export const childTheme = {
   },
   typography: {
     fontFamily: {
-      regular: 'System',
+      // Use 'System' as default or load a playful font like 'ComicNeue'
+      // See EXAMPLES.md for kid-friendly font recommendations
+      regular: 'System',  // Or 'ComicNeue-Regular' after loading
       medium: 'System',
       semiBold: 'System',
       bold: 'System',

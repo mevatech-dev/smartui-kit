@@ -150,9 +150,7 @@ const StatsColumn = styled.View`
   gap: ${({ theme }) => theme.spacing.sm}px;
 `;
 
-const StatItem = styled.View`
-  margin-bottom: ${({ theme }) => theme.spacing.xs}px;
-`;
+const StatItem = styled.View``;
 
 const CourseItem = styled.View`
   padding: ${({ theme }) => theme.spacing.md}px 0;
@@ -247,6 +245,7 @@ export const RewardsScreen = ({ rewards, totalPoints }) => {
               {
                 label: totalPoints >= item.cost ? 'Claim' : 'Need more points',
                 onPress: () => handleClaimReward(item),
+                disabled: totalPoints < item.cost,
               },
             ]}
           >
@@ -337,7 +336,7 @@ const ChipRow = styled.View`
 ### 3. Interactive Quiz/Game Screen
 
 ```typescript
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Card,
   Progress,
@@ -346,6 +345,7 @@ import {
   Rating,
   Alert,
   BottomSheet,
+  EmptyState,
   useToast,
 } from '@/components';
 import styled from 'styled-components/native';
@@ -356,6 +356,21 @@ export const QuizScreen = ({ questions, onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showResult, setShowResult] = useState(false);
   const { showToast } = useToast();
+  const timeoutRef = useRef(null);
+
+  // Guard clause: Handle empty questions array
+  if (!questions || questions.length === 0) {
+    return (
+      <Container>
+        <EmptyState
+          icon="alert-circle"
+          title="No Questions Available"
+          description="There are no quiz questions to display."
+          variant="minimal"
+        />
+      </Container>
+    );
+  }
 
   const progress = ((currentQuestion + 1) / questions.length) * 100;
   const question = questions[currentQuestion];
@@ -369,8 +384,13 @@ export const QuizScreen = ({ questions, onComplete }) => {
     } else {
       showToast({ message: 'Not quite! Try again! 💪', type: 'error' });
     }
+  };
 
-    setTimeout(() => {
+  // Handle navigation to next question with proper cleanup
+  useEffect(() => {
+    if (selectedAnswer === null) return;
+
+    timeoutRef.current = setTimeout(() => {
       if (currentQuestion + 1 < questions.length) {
         setCurrentQuestion(currentQuestion + 1);
         setSelectedAnswer(null);
@@ -378,7 +398,14 @@ export const QuizScreen = ({ questions, onComplete }) => {
         setShowResult(true);
       }
     }, 1500);
-  };
+
+    // Cleanup function to prevent memory leaks
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [selectedAnswer, currentQuestion, questions.length]);
 
   return (
     <Container>
@@ -616,7 +643,7 @@ const TimedChallenge = ({ duration, onComplete }) => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [onComplete]);
 
   return (
     <>
@@ -678,7 +705,7 @@ export const playfulTheme = {
     secondary: '#4ECDC4',    // Turquoise
     accent: '#FFE66D',       // Sunny yellow
     success: '#95E1D3',      // Mint green
-    error: '#FF6B9D',        // Same as primary for consistency
+    error: '#FF6384',        // Soft red (distinct from primary)
     warning: '#F38181',      // Coral
   },
   // ... rest of theme
