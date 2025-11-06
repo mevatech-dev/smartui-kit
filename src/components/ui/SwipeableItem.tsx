@@ -125,9 +125,9 @@ export const SwipeableItem: React.FC<SwipeableItemProps> = ({
       )}
 
       {/* Swipeable content */}
-      <AnimatedContent style={animatedStyle} as={ContentContainer} {...panResponder.panHandlers}>
-        {children}
-      </ContentContainer>
+      <AnimatedContent style={animatedStyle} {...panResponder.panHandlers}>
+        <ContentContainer>{children}</ContentContainer>
+      </AnimatedContent>
     </Container>
   );
 };

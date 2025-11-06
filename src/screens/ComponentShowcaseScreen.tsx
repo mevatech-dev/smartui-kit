@@ -8,6 +8,7 @@ import {
   RadioGroup,
   RadioGroupItem,
   Dropdown,
+  MultiSelect,
   Badge,
   NotificationBadge,
   Avatar,
@@ -38,6 +39,9 @@ import {
   Menu,
   EmptyState,
   SwipeableItem,
+  Tooltip,
+  ControlledTooltip,
+  Dialog,
 } from '@/components';
 import { useToast } from '@/components/ui/Toast';
 
@@ -58,6 +62,11 @@ export const ComponentShowcaseScreen = () => {
   const [progressValue, setProgressValue] = useState(65);
   const [currentStep, setCurrentStep] = useState(1);
   const [menuVisible, setMenuVisible] = useState(false);
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [selectedMultiple, setSelectedMultiple] = useState<string[]>([]);
+  const [rangeMin, setRangeMin] = useState(20);
+  const [rangeMax, setRangeMax] = useState(80);
   const { showToast } = useToast();
 
   const dropdownOptions = [
@@ -159,6 +168,18 @@ export const ComponentShowcaseScreen = () => {
               </ComponentCard>
 
               <ComponentCard>
+                <ComponentName>MultiSelect</ComponentName>
+                <MultiSelect
+                  options={dropdownOptions}
+                  values={selectedMultiple}
+                  onValuesChange={setSelectedMultiple}
+                  label="Select multiple fruits"
+                  placeholder="Choose multiple"
+                  searchable
+                />
+              </ComponentCard>
+
+              <ComponentCard>
                 <ComponentName>Slider</ComponentName>
                 <Slider
                   value={sliderValue}
@@ -167,6 +188,23 @@ export const ComponentShowcaseScreen = () => {
                   onValueChange={setSliderValue}
                   showValue
                   color="primary"
+                />
+              </ComponentCard>
+
+              <ComponentCard>
+                <ComponentName>RangeSlider</ComponentName>
+                <RangeSlider
+                  minValue={rangeMin}
+                  maxValue={rangeMax}
+                  min={0}
+                  max={100}
+                  step={5}
+                  onValueChange={(min, max) => {
+                    setRangeMin(min);
+                    setRangeMax(max);
+                  }}
+                  showValue
+                  color="accent"
                 />
               </ComponentCard>
 
@@ -484,6 +522,29 @@ export const ComponentShowcaseScreen = () => {
                   />
                 </BadgeRow>
               </ComponentCard>
+
+              <ComponentCard>
+                <ComponentName>Tooltip</ComponentName>
+                <BadgeRow>
+                  <Tooltip content="This is a helpful tooltip" placement="top">
+                    <ThemedButton title="Hover for Tooltip" variant="outlined" />
+                  </Tooltip>
+                  <ThemedButton
+                    title="Controlled Tooltip"
+                    variant="outlined"
+                    onPress={() => setTooltipVisible(true)}
+                  />
+                </BadgeRow>
+              </ComponentCard>
+
+              <ComponentCard>
+                <ComponentName>Dialog</ComponentName>
+                <ThemedButton
+                  title="Show Dialog"
+                  variant="outlined"
+                  onPress={() => setDialogVisible(true)}
+                />
+              </ComponentCard>
             </Section>
 
             <View style={{ height: 100 }} />
@@ -568,6 +629,26 @@ export const ComponentShowcaseScreen = () => {
             onPress: () => showToast('Delete selected', 'error'),
           },
         ]}
+      />
+
+      <ControlledTooltip
+        content="Controlled tooltip example"
+        placement="bottom"
+        visible={tooltipVisible}
+        onClose={() => setTooltipVisible(false)}
+      >
+        <View />
+      </ControlledTooltip>
+
+      <Dialog
+        visible={dialogVisible}
+        onClose={() => setDialogVisible(false)}
+        title="Confirm Action"
+        description="Are you sure you want to proceed with this action? This cannot be undone."
+        confirmText="Proceed"
+        cancelText="Cancel"
+        onConfirm={() => showToast('Action confirmed!', 'success')}
+        variant="default"
       />
 
       <FloatingActionButton
